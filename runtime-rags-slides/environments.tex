@@ -1,0 +1,193 @@
+\usepackage{tudscrcolor}
+% some colors are currently missing in tudscrcolor
+\definecolor{tudcyan}{cmyk/RGB/rgb}{%
+	1.00,0.00,0.00,0.00/000,158,224/0.0,0.6196078431372549,0.8784313725490196%
+}%
+
+\definecolor{boxbg}{RGB}{205,212,226}
+\definecolor{boxfg}{RGB}{0,29,75}
+
+
+\definecolor{tudgrey}{RGB}{95,99,98}
+
+\newcommand{\vboxsep}{\par\vspace{16mm}\noindent\hspace*{-2mm}}
+\newcommand{\clinesep}{\par\vspace{12mm}\noindent\hspace*{-2mm}}
+\newcommand{\hboxsep}{\hspace{11mm}}
+
+\DeclareRobustCommand\ebseries{\fontseries{eb}\selectfont}
+\DeclareRobustCommand\nbseries{\fontseries{b}\selectfont}
+\DeclareRobustCommand\sbseries{\fontseries{sb}\selectfont}
+\DeclareRobustCommand\rgseries{\fontseries{m}\selectfont}
+\DeclareRobustCommand\ltseries{\fontseries{l}\selectfont}
+\DeclareRobustCommand\clseries{\fontseries{cl}\selectfont}
+\DeclareTextFontCommand{\texteb}{\ebseries}
+\DeclareTextFontCommand{\textsb}{\sbseries}
+\DeclareTextFontCommand{\textlt}{\ltseries}
+\DeclareTextFontCommand{\textcl}{\clseries}
+
+
+\newcommand{\boxheadline}[1]{\textbf{\fontsize{36pt}{500pt}\selectfont{#1}}\par\vspace{3mm}}
+
+\newcommand{\titlebox}[2]{
+    \begin{tikzpicture}[remember picture,overlay]
+    \node at (current page.north west) {
+        \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=north west,align=left] at (28mm,-158mm) {
+            \begin{minipage}{\linewidth}
+            \setlength{\baselineskip}{85pt}
+%            \textbf{\fontsize{40pt}{500pt}\selectfont{\textcolor{HKS41}{Software Language Engineering 2018}}}\par
+            \textbf{\fontsize{80pt}{500pt}\selectfont{\textcolor{HKS41}{#1}}}\par
+            \vspace{8mm}
+            \setlength{\baselineskip}{44pt}
+            \textsb{\fontsize{40pt}{500pt}\selectfont{\textcolor{HKS41}{#2}}}
+            \end{minipage}
+            
+        };
+        \end{tikzpicture}
+    };
+\end{tikzpicture}
+}
+
+\newcommand{\fgcolor}[2]{
+%	\ifthenelse{\equal{#1}{TB1}}{\textcolor{TB1fg}{#2}}{
+%		\ifthenelse{\equal{#1}{TB2}}{\textcolor{TB2fg}{#2}}{
+%			\ifthenelse{\equal{#1}{TB3}}{\textcolor{TB3fg}{#2}}{
+%				\textcolor{boxfg}{#2}	
+%			}
+%		}
+%	}
+  \textcolor{#1}{#2}
+}
+\newcommand{\bgcolorline}[2]{
+	\ifthenelse{\equal{#1}{tudcyan}}{
+		\node[anchor=north west,minimum height=25mm,fill=tudcyan!20,minimum width=#2,align=center,inner sep=0,line width=1mm,draw=tudcyan!20,outer sep=0] {};
+		}{
+	\ifthenelse{\equal{#1}{HKS41}}{
+		\node[anchor=north west,minimum height=25mm,fill=HKS41!20,minimum width=#2,align=center,inner sep=0,line width=1mm,draw=HKS41!20,outer sep=0] {};
+		}{
+	\ifthenelse{\equal{#1}{HKS44}}{
+		\node[anchor=north west,minimum height=25mm,fill=HKS44!20,minimum width=#2,align=center,inner sep=0,line width=1mm,draw=HKS44!20,outer sep=0] {};
+		}{
+	\ifthenelse{\equal{#1}{HKS07}}{
+		\node[anchor=north west,minimum height=25mm,fill=HKS07!20,minimum width=#2,align=center,inner sep=0,line width=1mm,draw=HKS07!20,outer sep=0] {};
+		}{
+	\ifthenelse{\equal{#1}{HKS65}}{
+		\node[anchor=north west,minimum height=25mm,fill=HKS65!20,minimum width=#2,align=center,inner sep=0,line width=1mm,draw=HKS65!20,outer sep=0] {};
+	}{
+		\node[anchor=north west,minimum height=25mm,fill=#1,minimum width=#2,align=center,inner sep=0,line width=1mm,draw=#1,outer sep=0] {};
+  }
+	}
+	}
+	}
+	}
+}
+
+\newcommand{\bgcolorbox}[4]{
+	\ifthenelse{\equal{#1}{HKS41}}{
+		\node[anchor=north west,align=left,line width=1mm,draw=HKS41!20,outer sep=0] at (0,\dimexpr-25mm\relax) {
+			\begin{minipage}[t][#3]{\dimexpr#2-8.3mm\relax}
+				\vspace{3mm}
+				#4
+			\end{minipage}
+		};
+	}{
+	\ifthenelse{\equal{#1}{tudcyan}}{
+		\node[anchor=north west,align=left,line width=1mm,draw=tudcyan!20,outer sep=0] at (0,\dimexpr-25mm\relax) {
+			\begin{minipage}[t][#3]{\dimexpr#2-8.3mm\relax}
+				\vspace{3mm}
+				#4
+			\end{minipage}
+		};
+	}{
+	\ifthenelse{\equal{#1}{HKS44}}{
+		\node[anchor=north west,align=left,line width=1mm,draw=HKS44!20,outer sep=0] at (0,\dimexpr-25mm\relax) {
+			\begin{minipage}[t][#3]{\dimexpr#2-8.3mm\relax}
+				\vspace{3mm}
+				#4
+			\end{minipage}
+		};
+	}{
+	\ifthenelse{\equal{#1}{HKS07}}{
+  	\node[anchor=north west,align=left,line width=1mm,draw=HKS07!20,outer sep=0] at (0,\dimexpr-25mm\relax) {
+  		\begin{minipage}[t][#3]{\dimexpr#2-8.3mm\relax}
+  			\vspace{3mm}
+  			#4
+  		\end{minipage}
+  	};
+	}{
+	\ifthenelse{\equal{#1}{HKS65}}{
+  	\node[anchor=north west,align=left,line width=1mm,draw=HKS65!20,outer sep=0] at (0,\dimexpr-25mm\relax) {
+  		\begin{minipage}[t][#3]{\dimexpr#2-8.3mm\relax}
+  			\vspace{3mm}
+  			#4
+  		\end{minipage}
+  	};
+	}{
+  	\node[anchor=north west,align=left,line width=1mm,draw=#1,outer sep=0] at (0,\dimexpr-25mm\relax) {
+  		\begin{minipage}[t][#3]{\dimexpr#2-8.3mm\relax}
+  			\vspace{3mm}
+  			#4
+  		\end{minipage}
+  	};
+	}
+	}
+	}
+	}
+	}
+}
+
+\NewEnviron{contentbox}[4][]{
+	\begin{tikzpicture}
+		\bgcolorline{#4}{#3}
+		\node[anchor=north west,minimum height=25mm,,minimum width=#3,align=center,inner sep=7mm] {
+			\fgcolor{#4}{\fontsize{45pt}{500pt}\selectfont{\textbf{#2}}}
+		};
+		\bgcolorbox{#4}{#3}{#1}{\BODY}
+		\end{tikzpicture}
+}
+
+\NewEnviron{slimbox}[4][]{
+	\begin{tikzpicture}
+	\bgcolorline{#4}{#3}
+	\node[anchor=north west,minimum height=25mm,,minimum width=#3,align=center,inner sep=7mm] {
+		\fgcolor{#4}{\fontsize{45pt}{500pt}\selectfont{\textbf{#2}}}
+	};
+		\node[anchor=north west,align=left] at (0,\dimexpr-25mm\relax) {
+	\begin{minipage}[t][#1]{\dimexpr#3-10.7mm\relax}
+	\vspace{3mm}
+	\BODY
+	\end{minipage}
+};
+	\end{tikzpicture}
+}
+
+\newcommand{\floatline}[3]{
+	\begin{tikzpicture}
+	\bgcolorline{#3}{#2}
+	\node[anchor=north west,minimum height=25mm,,minimum width=#2,align=center,inner sep=7mm,outer sep=0] {
+		\fgcolor{#3}{\fontsize{45pt}{500pt}\selectfont{\textbf{#1}}}
+	};
+	\end{tikzpicture}
+}
+
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{
+  \OLDthebibliography{#1}
+  \setlength{\parskip}{0pt}
+  \setlength{\itemsep}{0pt plus 1ex}
+}
+
+\NewEnviron{literaturebox}{
+    \begin{tikzpicture}[remember picture,overlay]
+    \node at (current page.north west) {
+        \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=south west,align=left,inner sep=0,outer sep=0] at (32mm,-1069mm) {
+            \begin{minipage}{\dimexpr777mm\relax}
+            \setlength{\baselineskip}{32pt}
+            \textcolor{tudgrey}{\fontsize{24pt}{5pt}\selectfont{\BODY}}
+            \end{minipage}
+        };
+        \end{tikzpicture}
+    };
+\end{tikzpicture}
+}

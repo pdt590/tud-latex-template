@@ -1,0 +1,17 @@
+ public void inject(Collection<Match> matches) {
+-  List<SensorRef> refsToRemove = new ArrayList<>();
+   for (final Match match : matches) {
+-    for (SensorRef ref : match.getRoute()
+-         .getRequiredSensors()) {
+-      if (ref.getSensor() == match.getSensor()) {
+-        refsToRemove.add(ref);
+-      }
+-    }
+-  }
+-  for(SensorRef ref : refsToRemove) {
+-    ref.removeSelf();
++    match.getRoute().removeRequiredSensor(
++       match.getSensor());
+   }
+   driver.flushCache();
+ }

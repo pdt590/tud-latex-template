@@ -1,0 +1,4 @@
+Route ... ::= ... requires:Ref* [entry:Ref] [exit:Ref];
+SwitchPosition ... ::= target:Ref;
+Sensor ... ::= monitors:Ref*;
+abstract TrackElement ... ::= connectsTo:Ref*;

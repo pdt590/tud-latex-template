@@ -1,0 +1,50 @@
+\ProvidesPackage{beamerouterthemetud}[2018/09/14]
+
+\mode<presentation>
+
+\setbeamertemplate{itemize item}{---}
+\setbeamertemplate{itemize subitem}{--}
+\setbeamertemplate{itemize subsubitem}{--}
+\setbeamertemplate{enumerate item}{\insertenumlabel.}
+\setbeamertemplate{enumerate subitem}{\insertenumlabel.\insertsubenumlabel}
+\setbeamertemplate{enumerate subsubitem}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+\setbeamertemplate{enumerate mini template}{\insertenumlabel}
+
+\usetikzlibrary{calc}
+\setbeamertemplate{footline}[text line]{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\draw[thick,draw=HKS92!40] ($(current page.north west)-(0,\beamer@tud@regular@separatory)$) --($(current page.north east)-(0,\beamer@tud@regular@separatory)$);
+	\node[inner sep=0,anchor=north west,xshift=\beamer@tud@regular@logox,yshift=-\beamer@tud@regular@logoy] at (current page.north west) (footerlogo) {\includegraphics[width=\beamer@tud@regular@logow]{images/tu_logo_blue.pdf}};
+	\node[inner sep=0,anchor=north west,xshift=\beamer@tud@regular@infoblockx,yshift=-\beamer@tud@regular@infoblocky,minimum width=\beamer@tud@regular@infoblockw,minimum height=\beamer@tud@regular@infoblockh,align=left,text width=\beamer@tud@regular@infoblockw] at (current page.north west) (footerlogo) {%
+		\usebeamercolor[fg]{info in foot}{%
+			\usebeamerfont{info in foot}{%
+				\ifx\insertshorttitle\tud@empty%
+					\inserttitle\\%
+				\else%
+					\insertshorttitle\\%
+				\fi%
+				\ifx\insertshortauthor\tud@empty%
+					\insertauthor%
+				\else%
+					\insertshortauthor%
+				\fi%
+				\insertdate{}%
+			}%
+		}%
+	};
+	\node[inner sep=0,anchor=north west,xshift=\beamer@tud@regular@pagenumx,yshift=-\beamer@tud@regular@pagenumy,minimum width=\beamer@tud@regular@pagenumw,minimum height=\beamer@tud@regular@pagenumh] at (current page.north west) (footerlogo) {\usebeamercolor[fg]{info in foot}{\usebeamerfont{info in foot}{\insertframenumber\,/\,\inserttotalframenumber}}};
+	\node[inner sep=0,anchor=north east,xshift=\beamer@tud@regular@ddcx+\beamer@tud@regular@ddcw,yshift=-\beamer@tud@regular@ddcy] at (current page.north west) (footerlogo) {\includegraphics[height=\beamer@tud@regular@ddch]{\tud@logo}};
+	\end{tikzpicture}
+}
+
+\setbeamertemplate{frametitle}
+{
+    \nointerlineskip
+    \begin{beamercolorbox}[ht=1.8em]{frametitle}
+        \vbox{}\vskip-2ex%
+        \strut\insertframetitle\strut
+        \vskip-0.8ex%
+    \end{beamercolorbox}
+}
+
+\mode<all>

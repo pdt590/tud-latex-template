@@ -1,0 +1,6 @@
+syn Collection<Sensor> Route.requires() {
+  java.util.List<Sensor> sensors = new ArrayList<>();
+  for (SensorRef sensorRef : getRequiredSensorList())
+    sensors.add(sensorRef.getSensor());
+  return sensors;
+}

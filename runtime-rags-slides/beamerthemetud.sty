@@ -1,0 +1,505 @@
+\ProvidesPackage{beamerthemetud}[2018/09/14]
+
+\mode<presentation>
+
+% Requirement
+\RequirePackage{tikz}
+\usetikzlibrary{shapes.misc}
+
+\DeclareOptionBeamer{aspectratio}{\PassOptionsToPackage{aspectratio}{beamerinnerthemetud}}
+
+\newcommand{\tud@logo}{images/dresden-concept.pdf}
+\newcommand{\tud@faculty}{}
+\newcommand{\tud@department}{}
+\newcommand{\tud@institute}{}
+\newcommand{\tud@chair}{}
+
+% for some unknown reason, the comparison with \@empty fails, so we define our vown empty (with blackjack and hookers)
+\newcommand{\tud@empty}{}
+
+\newcommand\faculty[1]{\renewcommand{\tud@faculty}{#1}}
+\newcommand\department[1]{\renewcommand{\tud@department}{#1}}
+\renewcommand\institute[1]{\renewcommand{\tud@institute}{#1}}
+\newcommand\chair[1]{\renewcommand{\tud@chair}{#1}}
+
+\newcommand{\tud@fancyauthor}{}
+\newcommand{\fancyauthor}[1]{\renewcommand{\tud@fancyauthor}{#1}}
+
+\renewcommand{\logo}[1]{\renewcommand{\tud@logo}{#1}}
+
+\ProcessOptionsBeamer
+
+
+% all the sizes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sizes taken from the Powerpoint file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% measurements of title page
+%
+% tudlogo in the title
+\newlength\beamer@tud@title@tudlogox%
+\newlength\beamer@tud@title@tudlogoy%
+\newlength\beamer@tud@title@tudlogow%
+\newlength\beamer@tud@title@tudlogoh%
+%
+% ddclogo in the title
+\newlength\beamer@tud@title@ddclogox%
+\newlength\beamer@tud@title@ddclogoy%
+\newlength\beamer@tud@title@ddclogow%
+\newlength\beamer@tud@title@ddclogoh%
+%
+% small separation bar in the title
+\newlength\beamer@tud@title@sepbary%
+\newlength\beamer@tud@title@sepbarh%
+%
+% blue background of title page
+\newlength\beamer@tud@title@backgroundy%
+\newlength\beamer@tud@title@backgroundh%
+%
+% info block on title
+\newlength\beamer@tud@title@infoblockx%
+\newlength\beamer@tud@title@infoblocky%
+\newlength\beamer@tud@title@infoblockw%
+\newlength\beamer@tud@title@infoblockh%
+%
+% title block on title page
+\newlength\beamer@tud@title@titleblockx%
+\newlength\beamer@tud@title@titleblocky%
+\newlength\beamer@tud@title@titleblockw%
+\newlength\beamer@tud@title@titleblockh%
+%
+% dateblock on title
+\newlength\beamer@tud@title@dateblockx%
+\newlength\beamer@tud@title@dateblocky%
+\newlength\beamer@tud@title@dateblockw%
+\newlength\beamer@tud@title@dateblockh%
+%
+% measurements of regular page
+%
+% slide title
+\newlength\beamer@tud@regular@titlex%
+\newlength\beamer@tud@regular@titley%
+\newlength\beamer@tud@regular@titlew%
+\newlength\beamer@tud@regular@titleh%
+%
+% text
+\newlength\beamer@tud@regular@contentx%
+\newlength\beamer@tud@regular@contenty%
+\newlength\beamer@tud@regular@contentw%
+\newlength\beamer@tud@regular@contenth%
+\newlength\beamer@tud@regular@leftcontentx%
+\newlength\beamer@tud@regular@leftcontenty%
+\newlength\beamer@tud@regular@leftcontentw%
+\newlength\beamer@tud@regular@leftcontenth%
+\newlength\beamer@tud@regular@rightcontentx%
+\newlength\beamer@tud@regular@rightcontenty%
+\newlength\beamer@tud@regular@rightcontentw%
+\newlength\beamer@tud@regular@rightcontenth%
+%
+% separator line
+\newlength\beamer@tud@regular@separatory%
+%
+% logo
+\newlength\beamer@tud@regular@logox%
+\newlength\beamer@tud@regular@logoy%
+\newlength\beamer@tud@regular@logow%
+\newlength\beamer@tud@regular@logoh%
+%
+% infoblock
+\newlength\beamer@tud@regular@infoblockx%
+\newlength\beamer@tud@regular@infoblocky%
+\newlength\beamer@tud@regular@infoblockw%
+\newlength\beamer@tud@regular@infoblockh%
+%
+% pagenum
+\newlength\beamer@tud@regular@pagenumx%
+\newlength\beamer@tud@regular@pagenumy%
+\newlength\beamer@tud@regular@pagenumw%
+\newlength\beamer@tud@regular@pagenumh%
+%
+% ddc
+\newlength\beamer@tud@regular@ddcx%
+\newlength\beamer@tud@regular@ddcy%
+\newlength\beamer@tud@regular@ddcw%
+\newlength\beamer@tud@regular@ddch%
+%
+% section page
+%
+% title
+\newlength\beamer@tud@section@titlex%
+\newlength\beamer@tud@section@titley%
+\newlength\beamer@tud@section@titlew%
+\newlength\beamer@tud@section@titleh%
+%
+% blue background
+\newlength\beamer@tud@section@backgroundh%
+
+\newlength\beamer@tud@pageratio
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifdim\beamer@paperheight=9.6cm % 4:3 25.40*19.05
+	\setlength\beamer@tud@pageratio{0.5039370078740159cm}%
+	% measurements of title page
+	%
+	% tudlogo in the title
+	\setlength\beamer@tud@title@tudlogox{0.76\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogoy{0.97\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogow{4.14\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogoh{1.19\beamer@tud@pageratio}%
+	%
+	% ddclogo in the title
+	\setlength\beamer@tud@title@ddclogox{22.01\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogoy{0.91\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogow{2.84\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogoh{1.30\beamer@tud@pageratio}%
+	%
+	% small separation bar in the title
+	\setlength\beamer@tud@title@sepbary{2.73\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@sepbarh{0.48\beamer@tud@pageratio}%
+	%
+	% blue background of title page
+	\setlength\beamer@tud@title@backgroundy{2.72\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@backgroundh{16.33\beamer@tud@pageratio}%
+	%
+	% info block on title
+	\setlength\beamer@tud@title@infoblockx{2.13\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblocky{6.73\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblockw{22.17\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblockh{2.31\beamer@tud@pageratio}%
+	%
+	% title block on title page
+	\setlength\beamer@tud@title@titleblockx{2.13\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblocky{9.42\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblockw{22.17\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblockh{2.69\beamer@tud@pageratio}%
+	%
+	% dateblock on title
+	%\setlength\beamer@tud@title@dateblockx{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblocky{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblockw{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblockh{\beamer@tud@pageratio}%
+	%
+	% measurements of regular page
+	%
+	% slide title
+	\setlength\beamer@tud@regular@titlex{1.07\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titley{0.95\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titlew{23.24\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titleh{2.26\beamer@tud@pageratio}%
+	%
+	% text
+	\setlength\beamer@tud@regular@contentx{1.07\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contenty{4.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contentw{23.27\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contenth{11.81\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontentx{1.07\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontenty{4.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontentw{11.48\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontenth{11.81\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontentx{12.85\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontenty{4.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontentw{11.48\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontenth{11.81\beamer@tud@pageratio}%
+	%
+	% separator line
+	\setlength\beamer@tud@regular@separatory{16.93\beamer@tud@pageratio}%
+	%
+	% logo
+	\setlength\beamer@tud@regular@logox{1.08\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logoy{17.47\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logow{3.15\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logoh{0.91\beamer@tud@pageratio}%
+	%
+	% infoblock
+	\setlength\beamer@tud@regular@infoblockx{6.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblocky{17.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblockw{11.48\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblockh{1.02\beamer@tud@pageratio}%
+	%
+	% pagenum
+	\setlength\beamer@tud@regular@pagenumx{18.21\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumy{17.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumw{1.93\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumh{1.40\beamer@tud@pageratio}%
+	%
+	% ddc
+	\setlength\beamer@tud@regular@ddcx{22.42\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddcy{17.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddcw{2.41\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddch{1.09\beamer@tud@pageratio}%
+	%
+	% section page
+	%
+	% title
+	\setlength\beamer@tud@section@titlex{1.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titley{9.41\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titlew{22.05\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titleh{3.33\beamer@tud@pageratio}%
+	%
+	% blue background
+	\setlength\beamer@tud@section@backgroundh{16.92\beamer@tud@pageratio}%
+\fi
+
+\ifdim\beamer@paperheight=9cm % 16:9
+	\setlength\beamer@tud@pageratio{0.47244094488188976cm}%
+	% measurements of title page: 33.87x19.05
+	%
+	% tudlogo in the title
+	\setlength\beamer@tud@title@tudlogox{0.81\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogoy{0.97\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogow{4.90\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogoh{1.42\beamer@tud@pageratio}%
+	%
+	% ddclogo in the title
+	\setlength\beamer@tud@title@ddclogox{29.70\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogoy{0.91\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogow{3.38\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogoh{1.55\beamer@tud@pageratio}%
+	%
+	% small separation bar in the title
+	\setlength\beamer@tud@title@sepbary{2.85\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@sepbarh{0.48\beamer@tud@pageratio}%
+	%
+	% blue background of title page
+	\setlength\beamer@tud@title@backgroundy{2.85\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@backgroundh{16.21\beamer@tud@pageratio}%
+	%
+	% info block on title
+	\setlength\beamer@tud@title@infoblockx{2.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblocky{6.73\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblockw{29.01\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblockh{2.31\beamer@tud@pageratio}%
+	%
+	% title block on title page
+	\setlength\beamer@tud@title@titleblockx{2.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblocky{9.42\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblockw{29.01\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblockh{2.69\beamer@tud@pageratio}%
+	%
+	% dateblock on title
+	%\setlength\beamer@tud@title@dateblockx{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblocky{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblockw{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblockh{\beamer@tud@pageratio}%
+	%
+	% measurements of regular page
+	%
+	% slide title
+	\setlength\beamer@tud@regular@titlex{2.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titley{0.96\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titlew{29.39\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titleh{1.91\beamer@tud@pageratio}%
+	%
+	% text
+	\setlength\beamer@tud@regular@contentx{2.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contenty{4.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contentw{29.39\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contenth{12.07\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontentx{2.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontenty{4.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontentw{14.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontenth{12.07\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontentx{17.41\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontenty{4.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontentw{14.40\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontenth{12.07\beamer@tud@pageratio}%
+	%
+	% separator line
+	\setlength\beamer@tud@regular@separatory{17.01\beamer@tud@pageratio}%
+	%
+	% logo
+	\setlength\beamer@tud@regular@logox{1.41\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logoy{17.60\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logow{3.10\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logoh{0.89\beamer@tud@pageratio}%
+	%
+	% infoblock
+	\setlength\beamer@tud@regular@infoblockx{9.93\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblocky{17.57\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblockw{14.40\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblockh{1.02\beamer@tud@pageratio}%
+	%
+	% pagenum
+	\setlength\beamer@tud@regular@pagenumx{24.91\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumy{17.48\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumw{1.96\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumh{1.07\beamer@tud@pageratio}%
+	%
+	% ddc
+	\setlength\beamer@tud@regular@ddcx{30.48\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddcy{17.60\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddcw{2.13\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddch{0.97\beamer@tud@pageratio}%
+	%
+	% section page
+	%
+	% title
+	\setlength\beamer@tud@section@titlex{2.43\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titley{9.41\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titlew{29.39\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titleh{3.33\beamer@tud@pageratio}%
+	%
+	% blue background
+	\setlength\beamer@tud@section@backgroundh{17.02\beamer@tud@pageratio}%
+\fi
+
+\ifdim\beamer@paperheight=10cm % 16:10
+	\setlength\beamer@tud@pageratio{0.6297229219143576cm}%
+	% measurements of title page: 25.40*15.88
+	%
+	% tudlogo in the title
+	\setlength\beamer@tud@title@tudlogox{0.47\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogoy{0.80\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogow{4.04\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@tudlogoh{1.17\beamer@tud@pageratio}%
+	%
+	% ddclogo in the title
+	\setlength\beamer@tud@title@ddclogox{22.08\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogoy{0.74\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogow{2.84\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@ddclogoh{1.30\beamer@tud@pageratio}%
+	%
+	% small separation bar in the title
+	\setlength\beamer@tud@title@sepbary{2.37\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@sepbarh{0.41\beamer@tud@pageratio}%
+	%
+	% blue background of title page
+	\setlength\beamer@tud@title@backgroundy{2.37\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@backgroundh{13.49\beamer@tud@pageratio}%
+	%
+	% info block on title
+	\setlength\beamer@tud@title@infoblockx{1.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblocky{5.60\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblockw{22.05\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@infoblockh{1.91\beamer@tud@pageratio}%
+	%
+	% title block on title page
+	\setlength\beamer@tud@title@titleblockx{1.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblocky{7.85\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblockw{22.05\beamer@tud@pageratio}%
+	\setlength\beamer@tud@title@titleblockh{2.26\beamer@tud@pageratio}%
+	%
+	% dateblock on title
+	%\setlength\beamer@tud@title@dateblockx{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblocky{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblockw{\beamer@tud@pageratio}%
+	%\setlength\beamer@tud@title@dateblockh{\beamer@tud@pageratio}%
+	%
+	% measurements of regular page
+	%
+	% slide title
+	\setlength\beamer@tud@regular@titlex{1.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titley{0.80\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titlew{22.05\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@titleh{1.57\beamer@tud@pageratio}%
+	%
+	% text
+	\setlength\beamer@tud@regular@contentx{1.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contenty{3.44\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contentw{22.05\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@contenth{10.06\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontentx{1.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontenty{3.44\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontentw{10.82\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@leftcontenth{10.06\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontentx{13.06\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontenty{3.44\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontentw{10.80\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@rightcontenth{10.06\beamer@tud@pageratio}%
+	%
+	% separator line
+	\setlength\beamer@tud@regular@separatory{14.17\beamer@tud@pageratio}%
+	%
+	% logo
+	\setlength\beamer@tud@regular@logox{0.94\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logoy{14.66\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logow{2.64\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@logoh{0.76\beamer@tud@pageratio}%
+	%
+	% infoblock
+	\setlength\beamer@tud@regular@infoblockx{7.45\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblocky{14.62\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblockw{10.80\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@infoblockh{0.89\beamer@tud@pageratio}%
+	%
+	% pagenum
+	\setlength\beamer@tud@regular@pagenumx{18.68\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumy{14.28\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumw{1.47\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@pagenumh{1.22\beamer@tud@pageratio}%
+	%
+	% ddc
+	\setlength\beamer@tud@regular@ddcx{22.12\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddcy{14.58\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddcw{2.21\beamer@tud@pageratio}%
+	\setlength\beamer@tud@regular@ddch{1.02\beamer@tud@pageratio}%
+	%
+	% section page
+	%
+	% title
+	\setlength\beamer@tud@section@titlex{1.07\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titley{7.68\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titlew{22.78\beamer@tud@pageratio}%
+	\setlength\beamer@tud@section@titleh{3.81\beamer@tud@pageratio}%
+	%
+	% blue background
+	\setlength\beamer@tud@section@backgroundh{14.10\beamer@tud@pageratio}%
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ifdim\beamer@paperheight=9cm % 16:9
+\def\tud@backgroundimage{images/bg169.pdf}
+\else\ifdim\beamer@paperheight=10cm % 16:10
+\def\tud@backgroundimage{images/bg1610.pdf}
+\else\ifdim\beamer@paperheight=9.6cm % 4:3
+\def\tud@backgroundimage{images/bg43.pdf}
+\fi\fi\fi
+
+
+\setbeamersize{
+	text margin left    = \beamer@tud@regular@contentx,
+	text margin right   = \dimexpr\paperwidth-\beamer@tud@regular@contentx-\beamer@tud@regular@contentw\relax,
+	sidebar width left  = 0mm, % TODO
+	sidebar width right = 0mm,% TODO
+	description width   = 0mm,% TODO
+	mini frame size     = 0mm,% TODO
+	mini frame offset   = 0mm % TODO
+}
+
+% Settings
+\usecolortheme{tud}
+\useinnertheme{tud}
+\useoutertheme{tud}
+\usefonttheme{tud}
+
+\newcommand{\absolutetikz}[1]{
+	\begin{tikzpicture}[remember picture,overlay]
+	    \node at (current page.north west){%
+	    	\begin{tikzpicture}[overlay,remember picture,yscale=-1]
+	    	#1
+	    	\end{tikzpicture}
+    	};
+	\end{tikzpicture}
+
+}
+
+\newcommand{\beamerhelplines}{\absolutetikz{
+% title box
+\node[draw=red,minimum width=\beamer@tud@regular@titlew,minimum height=\beamer@tud@regular@titleh,anchor=north west] at (\beamer@tud@regular@titlex,\beamer@tud@regular@titley) {};
+% full text box
+\node[draw=red,minimum width=\beamer@tud@regular@contentw,minimum height=\beamer@tud@regular@contenth,anchor=north west] at (\beamer@tud@regular@contentx,\beamer@tud@regular@contenty) {};
+\node[draw=red,minimum width=\beamer@tud@regular@contentw,minimum height=1.2\paperheight,anchor=north west] at (\beamer@tud@regular@contentx,-1mm) {};
+%left and right text boxes
+% full text box
+\node[draw=red,minimum width=\beamer@tud@regular@leftcontentw,minimum height=\beamer@tud@regular@leftcontenth,anchor=north west] at (\beamer@tud@regular@leftcontentx,\beamer@tud@regular@leftcontenty) {};
+% full text box
+\node[draw=red,minimum width=\beamer@tud@regular@rightcontentw,minimum height=\beamer@tud@regular@rightcontenth,anchor=north west] at (\beamer@tud@regular@rightcontentx,\beamer@tud@regular@rightcontenty) {};
+}}
+
+\setbeamertemplate{navigation symbols}{}
+
+\mode<all>

@@ -1,0 +1,226 @@
+\begin{tikzpicture}
+
+  \node[draw=black,minimum width=7.9cm,minimum height=6.2cm] at (0,0) {};
+
+  
+% the model
+%/*
+\tikzstyle{object} = [minimum width=16,minimum height=10,draw=HKS92,fill=HKS92!10,inner sep=2,text=HKS92,font=\ttfamily\scriptsize]
+\tikzstyle{list} = [object,minimum width=5,minimum height=5]
+\tikzstyle{nclist} = [list,draw=HKS65,fill=HKS65!20]
+\tikzstyle{ncopt} = [nclist,draw=HKS33,fill=HKS33!10]
+\tikzstyle{ncref} = [nclist,draw=HKS07,fill=HKS07!20]
+\tikzstyle{childof} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS92,fill=HKS92]
+\tikzstyle{noncon} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS07]
+\tikzstyle{ononcon} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS33]
+\tikzstyle{lnoncon} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS65]
+\tikzstyle{rnoncon} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS07,dashed]
+\tikzstyle{binoncon} = [{Latex[length=1mm,width=1.2mm]}-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS07]
+%*/
+
+% RAGs
+
+% nodes
+\node[object] (root) at (-0.75,2.75) {RailwayContainer};
+\node[list] (RouteList) at (-1.5,2.25) {L};
+\node[list] (SensorList) at (-0.5,0.75) {L};
+\node[list] (SwitchPositionList) at (-2.5,0.75) {L};
+\node[list] (RegionList) at (0,2.25) {L};
+\node[object] (Route) at (-2.25,1.75) {Route};
+\node[object] (Region) at (0.5,1.75) {Region};
+\node[object] (Sensor) at (-1,0.25) {Sensor};
+\node[list] (TrackElementList) at (1.25,0.75) {L};
+\node[object] (Segment1) at (-1,-1.25) {Segment};
+\node[object] (Switch) at (0.5,-1.25) {Switch};
+\node[object] (Segment2) at (1.9,-1.25) {Segment};
+\node[object] (Segment3) at (3.4,-1.25) {Segment};
+\node[object] (Semaphore1) at (2,-2.75) {Semaphore};
+\node[object] (Semaphore2) at (-1,-2.75) {Semaphore};
+\node[object] (SwitchPosition) at (-2.6,0.25) {SwitchPosition};
+
+% % NC-lists
+\visible<2->{
+\node[nclist] (requires) at (-1.8694,1.1624) {L};
+\node[nclist] (positions) at (-0.6894,-0.5445) {L};
+\node[nclist] (monitoredBy) at (0.5,-0.5) {L};
+\node[nclist] (monitors) at (-0.2139,-0.0274) {L};
+\node[nclist] (connectsTo1) at (-0.5685,-1.8713) {L};
+\node[nclist] (connectsTo2) at (1.2196,-2.1937) {L};
+\node[ncopt] (sem1) at (-3.75,-1.25) {O};
+\node[ncopt] (sem2) at (-3.25,-1.25) {O};
+
+% ref nodes
+\node[ncref] (requiresr) at (-1.5219,0.7344) {R};
+\node[ncref] (positionsr) at (-1.3117,-0.2384) {R};
+\node[ncref] (monitoredByr) at (0.1509,0.2159) {R};
+\node[ncref] (monitorsr) at (0.1575,-0.555) {R};
+\node[ncref] (connectsTo1r) at (-0.1228,-1.8653) {R};
+\node[ncref] (connectsTo2r1) at (1.4872,-1.7144) {R};
+\node[ncref] (connectsTo2r2) at (2.3044,-1.9561) {R};
+\node[ncref] (sem1r) at (-3.5,-1.75) {R};
+\node[ncref] (sem2r) at (-3,-1.75) {R};
+\node[ncref] (targetr) at (-1.1752,-0.6784) {R};
+}
+% 
+% containment edges
+\draw[childof] (root) -- (RouteList);
+\draw[childof] (RouteList) edge (Route);
+\draw[childof] (root) edge (RegionList);
+\draw[childof] (Route) edge (SwitchPositionList);
+\draw[childof] (SwitchPositionList) edge (SwitchPosition);
+\draw[childof] (SensorList) edge (Sensor);
+\draw[childof] (Region) edge (SensorList);
+\draw[childof] (Region) edge (TrackElementList);
+\draw[childof] (TrackElementList) edge (Segment3);
+\draw[childof] (TrackElementList) edge (Segment2);
+\draw[childof] (TrackElementList) edge (Switch);
+\draw[childof] (TrackElementList) edge (Segment1);
+\draw[childof] (RegionList) edge (Region);
+\draw[childof] (Segment1) edge (Semaphore2);
+\draw[childof] (Segment2) edge (Semaphore1);
+
+\visible<1>{
+% non-containment edges (straight through)
+\draw[binoncon] plot[smooth, tension=.7] coordinates {(SwitchPosition.south) (-1.9792,-0.546) (-0.7112,-0.6045) (Switch.north west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Segment1.south east) (-0.1996,-1.5904) (Switch.south west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Switch.south east) (1.3428,-1.6159) (Segment2.south west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Switch.south) (1.706,-1.9184) (Segment3.south west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Route.190) (-3.6444,0.4223) (-3.0471,-1.8998) (Semaphore2.west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Route.170) (-3.725,0.7209) (-3.4665,-1.5376) (-1.7687,-2.9704) (Semaphore1.west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Route.east) (-1.1403,1.3607) (Sensor.north)};
+\draw[binoncon] plot[smooth, tension=.7] coordinates {(Sensor.345) (0.25,-0.25) (Switch.north)};
+}
+
+\visible<2->{
+% non-containment edges (using lists)
+% in:
+\draw[childof] (Route) -- (requires);
+\draw[childof] (Segment1) --(connectsTo1);
+\draw[childof] (Switch) --(connectsTo2);
+\draw[childof] (Sensor) -- (monitors);
+\draw[childof] (Switch) -- (monitoredBy);
+\draw[childof,fill=none] plot[smooth, tension=.7] coordinates {(Route.190) (-3.6196,0.5687) (sem2.120)};
+\draw[childof,fill=none] plot[smooth, tension=.7] coordinates {(Route.170) (-3.75,0.75) (sem1.120)};
+\draw[childof] (Switch) -- (positions);
+\draw[childof] (SwitchPosition) -- (targetr);
+
+%full
+\draw[rnoncon] (targetr)  -- (Switch.west);
+
+% out
+% \draw[noncon] (requires) --(Sensor);
+% \draw[noncon] (connectsTo1) -- (Switch);
+% \draw[noncon] (connectsTo2) -- (Segment2);
+% \draw[noncon] (connectsTo2) -- (Segment3);
+% \draw[noncon] (monitors) -- (Switch);
+% \draw[noncon] (monitoredBy) -- (Sensor);
+% \draw[noncon] plot[smooth, tension=.7] coordinates {(sem2.300) (-2.75,-1.75) (Semaphore2.west)};
+% \draw[noncon] plot[smooth, tension=.7] coordinates {(sem1.300) (-1.6949,-3.0126) (Semaphore1.west)};
+% \draw[noncon] (Switch) -- (positions);
+% \draw[noncon] (positions) -- (SwitchPosition);
+%full
+%\draw[noncon] plot[smooth, tension=.7] coordinates {(SwitchPosition.south) (-2.3118,-0.796) (-0.8737,-0.917) (Switch.west)};
+
+
+% via ref
+\draw[lnoncon] (requires) --(requiresr);
+\draw[rnoncon] (requiresr) --(Sensor);
+\draw[lnoncon] (connectsTo1) -- (connectsTo1r);
+\draw[rnoncon] (connectsTo1r) -- (Switch);
+\draw[rnoncon] (connectsTo2) -- (connectsTo2r1);
+\draw[lnoncon] (connectsTo2) -- (connectsTo2r1);
+\draw[rnoncon] (connectsTo2r1) -- (Segment2);
+\draw[lnoncon] (connectsTo2) -- (connectsTo2r2);
+\draw[rnoncon] (connectsTo2r2) -- (Segment3);
+\draw[lnoncon] (monitors) -- (monitorsr);
+\draw[rnoncon] (monitorsr) -- (Switch);
+\draw[lnoncon] (monitoredBy) -- (monitoredByr);
+\draw[rnoncon] (monitoredByr) -- (Sensor);
+\draw[ononcon] (sem1) -- (sem1r);
+\draw[ononcon] (sem2) -- (sem2r);
+\draw[rnoncon] plot[smooth, tension=.7] coordinates {(sem2r.300) (-2.3397,-2.397) (Semaphore2.west)};
+\draw[rnoncon] plot[smooth, tension=.7] coordinates {(sem1r.300) (-1.6949,-3.0126) (Semaphore1.west)};
+\draw[rnoncon] (positionsr) -- (SwitchPosition);
+\draw[lnoncon] (positions) -- (positionsr);
+}
+
+\visible<3->{
+\node[list,draw=HKS92!30,fill=HKS92!5,text=HKS92!30] (RouteList) at (-1.5,2.25) {L};
+\node[list,draw=HKS92!30,fill=HKS92!5,text=HKS92!30] (SensorList) at (-0.5,0.75) {L};
+\node[list,draw=HKS92!30,fill=HKS92!5,text=HKS92!30] (SwitchPositionList) at (-2.5,0.75) {L};
+\node[list,draw=HKS92!30,fill=HKS92!5,text=HKS92!30] (RegionList) at (0,2.25) {L};
+\node[list,draw=HKS92!30,fill=HKS92!5,text=HKS92!30] (TrackElementList) at (1.25,0.75) {L};
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (root) -- (RouteList);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (RouteList) edge (Route);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (root) edge (RegionList);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (Route) edge (SwitchPositionList);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (SwitchPositionList) edge (SwitchPosition);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (SensorList) edge (Sensor);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (Region) edge (SensorList);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (Region) edge (TrackElementList);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (TrackElementList) edge (Segment3);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (TrackElementList) edge (Segment2);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (TrackElementList) edge (Switch);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (TrackElementList) edge (Segment1);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (RegionList) edge (Region);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (Segment1) edge (Semaphore2);
+\draw[childof,draw=HKS92!20,fill=HKS92!20] (Segment2) edge (Semaphore1);
+
+\node[nclist,draw=HKS65!30,fill=HKS65!5,text=HKS92!30] (requires) at (-1.8694,1.1624) {L};
+\node[nclist,draw=HKS65!30,fill=HKS65!5,text=HKS92!30] (connectsTo1) at (-0.5685,-1.8713) {L};
+\node[nclist,draw=HKS65!30,fill=HKS65!5,text=HKS92!30] (connectsTo2) at (1.2196,-2.1937) {L};
+\node[ncopt,draw=HKS33!30,fill=HKS33!2,text=HKS92!30] (sem1) at (-3.75,-1.25) {O};
+\node[ncopt,draw=HKS33!30,fill=HKS33!2,text=HKS92!30] (sem2) at (-3.25,-1.25) {O};
+
+% ref nodes
+\node[ncref,draw=HKS07!30,fill=HKS07!5,text=HKS92!30] (requiresr) at (-1.5219,0.7344) {R};
+\node[ncref,draw=HKS07!30,fill=HKS07!5,text=HKS92!30] (connectsTo1r) at (-0.1228,-1.8653) {R};
+\node[ncref,draw=HKS07!30,fill=HKS07!5,text=HKS92!30] (connectsTo2r1) at (1.4872,-1.7144) {R};
+\node[ncref,draw=HKS07!30,fill=HKS07!5,text=HKS92!30] (connectsTo2r2) at (2.3044,-1.9561) {R};
+\node[ncref,draw=HKS07!30,fill=HKS07!5,text=HKS92!30] (sem1r) at (-3.5,-1.75) {R};
+\node[ncref,draw=HKS07!30,fill=HKS07!5,text=HKS92!30] (sem2r) at (-3,-1.75) {R};
+
+\draw[childof,draw=HKS92!20,fill=HKS92!5] (Route) -- (requires);
+\draw[childof,draw=HKS92!20,fill=HKS92!5] (Segment1) --(connectsTo1);
+\draw[childof,draw=HKS92!20,fill=HKS92!5] (Switch) --(connectsTo2);
+\draw[childof,draw=HKS92!20,fill=HKS92!5,fill=none] plot[smooth, tension=.7] coordinates {(Route.190) (-3.6196,0.5687) (sem2.120)};
+\draw[childof,draw=HKS92!20,fill=HKS92!5,fill=none] plot[smooth, tension=.7] coordinates {(Route.170) (-3.75,0.75) (sem1.120)};
+
+% via ref
+\draw[lnoncon,draw=HKS65!20] (requires) --(requiresr);
+\draw[rnoncon,draw=HKS07!20] (requiresr) --(Sensor);
+\draw[lnoncon,draw=HKS65!20] (connectsTo1) -- (connectsTo1r);
+\draw[rnoncon,draw=HKS07!20] (connectsTo1r) -- (Switch);
+\draw[rnoncon,draw=HKS07!20] (connectsTo2) -- (connectsTo2r1);
+\draw[lnoncon,draw=HKS65!20] (connectsTo2) -- (connectsTo2r1);
+\draw[rnoncon,draw=HKS07!20] (connectsTo2r1) -- (Segment2);
+\draw[lnoncon,draw=HKS65!20] (connectsTo2) -- (connectsTo2r2);
+\draw[rnoncon,draw=HKS07!20] (connectsTo2r2) -- (Segment3);
+
+\draw[ononcon,draw=HKS33!20] (sem1) -- (sem1r);
+\draw[ononcon,draw=HKS33!20] (sem2) -- (sem2r);
+\draw[rnoncon,draw=HKS07!20] plot[smooth, tension=.7] coordinates {(sem2r.300) (-2.3397,-2.397) (Semaphore2.west)};
+\draw[rnoncon,draw=HKS07!20] plot[smooth, tension=.7] coordinates {(sem1r.300) (-1.6949,-3.0126) (Semaphore1.west)};
+
+
+\node[nclist] (positions) at (-0.6894,-0.5445) {L};
+\node[nclist] (monitoredBy) at (0.5,-0.5) {L};
+\node[nclist] (monitors) at (-0.2139,-0.0274) {L};
+\node[ncref] (positionsr) at (-1.3117,-0.2384) {R};
+\node[ncref] (monitoredByr) at (0.1509,0.2159) {R};
+\node[ncref] (monitorsr) at (0.1575,-0.555) {R};
+\node[ncref] (targetr) at (-1.1752,-0.6784) {R};
+\draw[childof] (Sensor) -- (monitors);
+\draw[childof] (Switch) -- (monitoredBy);
+\draw[childof] (Switch) -- (positions);
+\draw[childof] (SwitchPosition) -- (targetr);
+\draw[rnoncon] (targetr)  -- (Switch.west);
+\draw[lnoncon] (monitors) -- (monitorsr);
+\draw[rnoncon] (monitorsr) -- (Switch);
+\draw[lnoncon] (monitoredBy) -- (monitoredByr);
+\draw[rnoncon] (monitoredByr) -- (Sensor);
+\draw[rnoncon] (positionsr) -- (SwitchPosition);
+\draw[lnoncon] (positions) -- (positionsr);
+}
+
+\end{tikzpicture}

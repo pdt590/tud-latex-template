@@ -1,0 +1,601 @@
+% !TeX encoding = UTF-8
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=169,9pt,english]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes} % enquote
+\usepackage{soul} % underline with ul
+
+\input{lst.tex}
+
+% tikz
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.text,shapes,arrows,arrows.meta,positioning}
+
+\definecolor{trainsensor}{RGB}{77,77,77}
+\definecolor{trainroute}{RGB}{230,176,2}
+\definecolor{traintrack}{RGB}{187,187,187}
+\definecolor{traingreen}{RGB}{0,157,0}
+\definecolor{trainred}{RGB}{255,0,0}
+
+\usetheme{tud}
+
+\title[Continuous Model Validation using Reference Attribute Grammars]{Continuous Model Validation\\Using Reference Attribute Grammars}
+\subtitle{}
+\date[11.10.2018]{SLE'18, Boston, November 5, 2018}
+
+\setul{2.5pt}{}
+\fancyauthor{\ul{Johannes~Mey}\textsuperscript{1}, René~Schöne\textsuperscript{1}, Görel~Hedin\textsuperscript{2}, Emma~Söderberg\textsuperscript{2},\\[.2\baselineskip] Thomas~Kühn\textsuperscript{1}, Niklas~Fors\textsuperscript{2}, Jesper~Öqvist\textsuperscript{2}, and Uwe~Aßmann\textsuperscript{1}\\[.7\baselineskip]\footnotesize\textsuperscript{1}Technische Universität Dresden\\\textsuperscript{2}Lund University}
+\author[J.~Mey, R.~Schöne, G.~Hedin, E.~Söderberg, T.~Kühn, N.~Fors, J.~Öqvist, and U.~Aßmann]{Johannes~Mey, René~Schöne, Görel~Hedin, Emma~Söderberg, Thomas~Kühn, Niklas~Fors, Jesper~Öqvist, and Uwe~Aßmann}
+
+\setbeamertemplate{blocks}[default]
+
+\logo{images/lund-logo.pdf}
+
+\newcommand{\link}[2]{\textcolor{tudcyan}{\underline{\href{#2}{#1}}}}
+
+\newcommand{\missingdiagram}[1]{\texttt{\textcolor{red}{\textbf{Missing figure: }#1}}}
+\newenvironment{todolist}{\ttfamily\color{red}TODO\\\begin{itemize}\color{red}\ttfamily}{\end{itemize}}
+\newcommand{\todotext}[1]{{\ttfamily\color{red}#1}}
+
+\setbeamersize{description width=3cm}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+	\titlepage
+	\absolutetikz{
+		\node[rotate=-17] at (15.2cm,2.5cm) {\includegraphics[page=2,width=1.3cm]{images/badges.pdf}};
+		\node[,rotate=-17] at (15.2cm,3.9cm) {\includegraphics[page=1,width=1.3cm]{images/badges.pdf}};
+	}
+\end{frame}
+}
+
+\begin{frame}
+	\frametitle{Working with Runtime Models}
+	
+	\textbf{Running example:} Modeling train tracks and routes.
+	\includegraphics<1>[width=.7\linewidth]{images/tb_overview-full.png}
+	\includegraphics<2>[width=.7\linewidth]{images/tb_overview-small.png}
+	\includegraphics<3>[width=.7\linewidth]{images/tb_overview-small-wrong.png}\\
+	\footnotesize{Example model, from \todotext{cite train paper}}\normalsize
+	\vspace{1\baselineskip}\\
+	\textbf{Use Case:}
+	\begin{itemize}
+		\item Modeling editor for rail networks
+		\item Continuously \emph{find} and \emph{repair} faults
+	\end{itemize}
+	
+
+	\begin{tikzpicture}[overlay,remember picture]
+	    \node<2-3> at (current page.north west){%
+	    	\begin{tikzpicture}[overlay,remember picture,yscale=-1]
+	    	\node[anchor=north west] at (8.5cm,1cm) {\input{images/process-model-initial.tikz}};
+	    	\end{tikzpicture}
+    	};
+	\end{tikzpicture}
+	\absolutetikz{
+		\draw<3>[draw=HKS07,line width=1.5] (4.28cm,4.98cm) ellipse (3.5mm and 1.2mm);
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Validating Changing Models}
+	
+	Models:
+	\begin{itemize}
+		\item \textbf{Analyze}\\
+	  \emph{Here:} Search for errors/inconsistencies
+		\item \textbf{Modify}\\
+	  \emph{Here:} Fix errors/inconsistencies
+
+	\end{itemize}
+	\vspace*{2\baselineskip}
+	\uncover<5->{
+	Models at runtime:
+	\begin{itemize}
+		\item Analyze \textbf{incrementally}
+		\item Modify \textbf{continuously}
+	\end{itemize}
+	}
+	
+	\begin{tikzpicture}[remember picture,overlay]
+		\node at (current page.north west){%
+	    	\begin{tikzpicture}[overlay,remember picture,yscale=-1]
+	    	\node[anchor=north west] at (8.5cm,1cm) {
+	    				\input{images/process-model.tikz}
+	    			};
+	    	\end{tikzpicture}
+    	};
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Reference Attribute Grammars as Models}
+	
+		Our approach:\\
+		\textbf{Reference Attribute Grammars (RAGs)}
+		\begin{itemize}
+			\item Context-free grammar
+			\item Attributes:
+			\begin{itemize}
+				\item \emph{Intrinsic}
+				\item \emph{Computed}: synthesized, inherited, \ldots
+				\item \emph{Reference}: Intrinsic \emph{or} computed
+			\end{itemize}
+			\item We use: \textbf{JastAdd} \todotext{cite JastAdd}
+		\end{itemize}
+		
+		\vspace*{2\baselineskip}
+		
+		RAGs for modeling offer:
+		\begin{itemize}
+			\item Shorthands for\\ navigation and computation on trees
+			\item Efficiency through memoization
+			\item Incremental evaluation
+		\end{itemize}
+
+		\begin{tikzpicture}[remember picture,overlay]
+			\node at (current page.north west){%
+		    	\begin{tikzpicture}[overlay,remember picture,yscale=-1]
+		    	\node[anchor=north west] at (8.5cm,1cm) {
+		    				\input{images/process-ag.tikz}
+		    			};
+		    	\end{tikzpicture}
+	    	};
+		\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Model-Grammar Mismatch}
+
+		\textbf{Relations} are different:
+		\begin{itemize}
+			\item In \textbf{models}:
+			\begin{itemize}
+				\item Containment relations form \emph{overlay tree}
+				\item Non-containment relations
+				\item Bidirectional relations
+			\end{itemize}
+			\item In \textbf{grammars}:
+			\begin{itemize}
+				\item Containment references:\hspace{6.5mm}\textbf{tree}
+				\item Non-containment references
+				\item Bidirectional references
+			\end{itemize}
+		\end{itemize}
+		
+		\vspace*{2\baselineskip}
+		
+%		\todotext{use symbols from René in itemize!}\\
+%		Non-containment references in RAGs:
+%		\begin{enumerate}
+%			\item Computed reference attributes
+%			\item Intrinsic reference attributes
+%			\item Grammar extension
+%		\end{enumerate}
+		
+			
+		\begin{tikzpicture}[remember picture,overlay]
+			\node at (current page.north west){%
+		    	\begin{tikzpicture}[overlay,remember picture,yscale=-1]
+		    	\node[anchor=north west] at (8.5cm,1cm) {
+		    				\input{images/process-ag-rel-only.tikz}
+		    			};
+		    	\end{tikzpicture}
+	    	};
+		\end{tikzpicture}
+		\absolutetikz{
+			\node[] (paren) at (6.45cm,5.26cm) {\fontsize{17pt}{500pt}\selectfont{\}}}; 
+			\node[right=-1.5mm of paren] {\small\textbf{this paper}}; 
+		}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Metamodels and Grammars}
+	
+	\begin{columns}[T]
+		\column{.5\linewidth}
+			\includegraphics<2>[width=\linewidth]{images/ecore-no-enums.pdf}
+			\includegraphics<1>[width=\linewidth]{images/ecore-no-enums-containment-only.pdf}
+		\column{.5\linewidth}
+		Abstract grammar (JastAdd syntax)
+\begin{lstlisting}[language=AST]
+RailwayContainer ::= Route* Region*;
+abstract RailwayElement ::= <Id:int>;
+Region : RailwayElement ::= TrackElement* Sensor*;
+Semaphore : RailwayElement ::= <Signal:Signal>;
+Route : RailwayElement ::= <Active:boolean> SwitchPosition*;
+SwitchPosition : RailwayElement ::= <Position:Position>;
+Sensor : RailwayElement;
+abstract TrackElement:RailwayElement;
+Segment : TrackElement ::= <Length:int> Semaphore*;
+Switch : TrackElement ::= <CurrentPosition:Position>;
+\end{lstlisting}
+
+	\uncover<2>{How to capture non-containment relations?}
+
+	\end{columns}
+\end{frame}
+
+%\begin{frame}
+%	\frametitle{TODO: Interlude: What are RAGs?}
+%	
+%	\begin{todolist}
+%		\item explain all the required features of RAGs:
+%		\item Especially intrinsic references
+%	\end{todolist}
+%\end{frame}
+
+\begin{frame}
+	\frametitle{Non-Containment Relations in Detail}
+	\begin{columns}[T]
+		\column{.44\linewidth}
+			\textbf{Non-Containment References\visible<2->{:}}
+			\visible<2->{
+			\begin{itemize}
+				\item \textbf{In RAGs:} typed reference nodes: \tikz[baseline={($ (current bounding box.north) - (0,7pt) $)}]\node[inner sep=2,text=HKS92,font=\ttfamily\footnotesize,draw=HKS07,fill=HKS07!20] {R};
+			\end{itemize}
+			}
+			\vspace{1.0\baselineskip}
+			\textbf{Cardinality\visible<2->{:}}
+			\begin{itemize}
+				\item \texttt{1 : 1}
+				\item \texttt{1 : \{0..1\}}
+				\item \texttt{1 : N}
+			\end{itemize}
+			\visible<2->{
+				\begin{itemize}
+					\item \textbf{In RAGs:} \emph{optional} \tikz[baseline={($ (current bounding box.north) - (0,7pt) $)}]\node[inner sep=2,text=HKS92,font=\ttfamily\footnotesize,draw=HKS33,fill=HKS33!10] {O};
+					and \emph{list nodes}: \tikz[baseline={($ (current bounding box.north) - (0,7pt) $)}]\node[inner sep=2,text=HKS92,font=\ttfamily\footnotesize,draw=HKS65,fill=HKS65!20] {L};
+				\end{itemize}
+			}
+			\vspace{1.0\baselineskip}
+			\textbf{Bidirectional References\visible<3->{:}}
+			\visible<3->{
+				\begin{itemize}
+					\item \textbf{In RAGs:}\\
+					One direction in grammar,\\
+					the other in grammar or attribute
+				\end{itemize}
+			}
+		\column{.46\linewidth}
+			\hspace{-6mm}\begin{minipage}{.51\linewidth}
+				\input{images/ag-example.tikz}
+			\end{minipage}	
+		\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Handling Non-containment Relations in RAGs}
+	\begin{description}
+		\item[\textbf{Approach 1:}] Name analysis
+		\begin{itemize}
+			\item Use the globally unique identifiers of all objects
+			\item Encode non-containment relations as \texttt{Id} uses
+			\item Resolve using name analysis
+		\end{itemize}
+		\item[\textbf{Approach 2:}] Explicit intrinsic reference attributes
+		\begin{itemize}
+			\item Store references as Java object references
+		\end{itemize}
+	\end{description}
+	
+	\begin{description}
+		\item[\textbf{Problem:}] Bidirectional relations:
+		\begin{itemize}
+			\item Either use \emph{collection attributes} to reverse references \textcolor{HKS07}{(\textbf{slow!})}
+			\item Or two unidirectional relations \textcolor{HKS07}{(\textbf{risk of inconsistency!})}
+		\end{itemize}
+	\end{description}
+%	\begin{itemize}
+%		\item Drawbacks
+%		\begin{itemize}
+%			\item Boilerplate code
+%			\item Global name analysis hampers performance of incremental updates
+%		\end{itemize}
+%	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Solution 1: Name Analysis}
+	\begin{columns}[T]
+		\column{.45\linewidth}
+			A reference is an \texttt{Id}
+  			\begin{itemize}
+  				\item \lstinputlisting[language=AST]{code/refNamelookup.ast}
+  				\item Collect all elements of a type in map
+  				\item Resolve reference by map lookup
+  			\end{itemize}
+  			\vspace{1\baselineskip}
+  			\textbf{Drawbacks:}
+  			\begin{itemize}
+  				\item Map must be recomputed on model change
+  				\item Bidirectional references slow or inconsistent
+  			\end{itemize}
+		\column{.45\linewidth}
+			\lstinputlisting[language=JRAG,style=unboxed]{code/resolveNamelookup.jrag}
+			\lstinputlisting[language=JRAG,style=unboxed]{code/requiresNamelookup.jrag}
+		\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Solution 2: Intrinsic Reference Attributes}
+	\begin{columns}[T]
+		\column{.45\linewidth}
+			A reference is an \texttt{Id}
+  			\begin{itemize}
+  				\item  \lstinputlisting[language=AST,style=unboxed]{code/refOptimized.ast}
+  				\item Lookup is done once in \emph{read} phase
+  			\end{itemize}
+  			\vspace{1\baselineskip}
+  			\textbf{Drawback:}
+  			\begin{itemize}
+  			  	\item Bidirectional references slow or inconsistent
+  			\end{itemize}
+		\column{.45\linewidth}
+%			\lstinputlisting[language=JRAG,style=unboxed]{code/resolveNamelookup.jrag}
+%			\lstinputlisting[language=JRAG,style=unboxed]{code/requiresNamelookup.jrag}
+		\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{Extending the Grammar}
+	\begin{columns}[T]
+		\column{.5\linewidth}
+			\includegraphics[width=\linewidth]{images/ecore-no-enums.pdf}
+		\column{.45\linewidth}
+		RAG abstract grammar
+\begin{lstlisting}[language=AST]
+RailwayContainer ::= Route* Region*;
+abstract RailwayElement ::= <Id:int>;
+Region : RailwayElement ::= TrackElement* Sensor*;
+Semaphore : RailwayElement ::= <Signal:Signal>;
+Route : RailwayElement ::= <Active:boolean> SwitchPosition*;
+SwitchPosition : RailwayElement ::= <Position:Position>;
+Sensor : RailwayElement;
+abstract TrackElement:RailwayElement;
+Segment : TrackElement ::= <Length:int> Semaphore*;
+Switch : TrackElement ::= <CurrentPosition:Position>;
+\end{lstlisting}
+	Extending RAGs with relations
+\begin{lstlisting}[language=AST]
+rel Route.requires* -> Sensor;
+rel Route.entry? -> Semaphore;
+rel Route.exit? -> Semaphore;
+rel SwitchPosition.target <-> Switch.positions*;
+rel Sensor.monitors* <-> TrackElement.monitoredBy*;
+rel TrackElement.connectsTo* -> TrackElement;
+\end{lstlisting}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The RelAST Preprocessor}
+	Automatically generate
+	\begin{itemize}
+		\item Grammar with non-containment relations
+		\item Accessor attributes
+		\item Setter attributes
+		\begin{itemize}
+			\item Ensuring consistency for bidirectional relations
+		\end{itemize}
+	\end{itemize}
+	\vspace{2\baselineskip}
+	\begin{tikzpicture}
+		\pgfdeclarelayer{bg}    % declare background layer
+		\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+		
+		\tikzstyle{data} = [thick,minimum width=16,minimum height=10,draw,font=\ttfamily]
+		\tikzstyle{process} = [thick,minimum width=16,minimum height=10,draw,font=\itshape,,rounded corners=2mm]
+		\tikzstyle{myarrow} = [-latex,thick]
+		
+		% Nodes
+		\node [data] (grammar) at (0,0) {Grammar.relast};
+		\node [process, right=10mm of grammar, align=center] (relast) {Relast-\\compiler};
+		\node [data, above right=-4mm and 10mm of relast] (genGrammar) {GenGrammar.ast\phantom{ja}};
+		\node [data, below right=-4mm and 10mm of relast] (genRelation) {GenRelation.jadd};
+		\node [process, right=50mm of relast] (jastadd) {JastAdd};
+		
+		% Attributes above grammar.relast
+		\node [data, fill=white, above=3mm of grammar] (attr) {Attribute.jrag};
+		\begin{pgfonlayer}{bg}    % select the background layer
+		  \node [data, xshift=2mm,yshift=2mm] (attr2) at (attr) {\phantom{Attribute.jrag}};
+		  \node [data, fill=white, xshift=1mm,yshift=1mm] at (attr) {\phantom{Attribute.jrag}};
+		\end{pgfonlayer}
+		\draw [myarrow] (attr2.east) -| (jastadd.north);
+		
+		\node [data, fill=white, right=10mm of jastadd] (java) {ClassA.java};
+		\begin{pgfonlayer}{bg}    % select the background layer
+		  \node [data, xshift=2mm,yshift=2mm] at (java) {\phantom{ClassA.java}};
+		  \node [data, fill=white, xshift=1mm,yshift=1mm] at (java) {\phantom{ClassA.java}};
+		\end{pgfonlayer}
+		
+		\draw [myarrow] (grammar.east) -- (relast.west);
+		\draw [myarrow] (relast.east) -- (genGrammar.west);
+		\draw [myarrow] (relast.east) -- (genRelation.west);
+		\draw [myarrow] (genGrammar.east) -- (jastadd.170);
+		\draw [myarrow] (genRelation.east) -- (jastadd.west);
+		\draw [myarrow] (jastadd.east) -- (java.west);
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Evaluation}
+	Two aspects:
+	\begin{enumerate}
+		\item \textbf{Performance}
+		\begin{itemize}
+			\item Compare the three approaches with model- and graph-based solutions
+		\end{itemize}
+		\item \textbf{Conciseness}
+		\begin{itemize}
+			\item Measure complexity reduction
+		\end{itemize}	
+	\end{enumerate}
+	
+%	\begin{todolist}
+%		\item Introduce the competition
+%		\item All 6 queries
+%		\item Mention the setting (which machine etc)
+%		\item Part 1: LOC/shorter attributes (maybe diff?)
+%		\item Part 2: show the diagrams from the paper.
+%	\end{todolist}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The Train Benchmark}
+	\includegraphics[width=.9\linewidth]{images/tb_process.pdf}\\
+	\footnotesize{Benchmark process, from \todotext{cite train paper}}\normalsize
+	
+	\vspace{1\baselineskip}
+	\begin{description}
+		\item[\textbf{Read}] Load a model from file
+		\item[\textbf{Check}] Perform a consistency check
+		\item[\textbf{Transformation}] Fix some faults found during the preceding \emph{check}
+		\item[\textbf{Recheck}] Repeat the check on the transformed model
+	\end{description}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example  Query: RouteSensor}
+	\textbf{RouteSensor:}\\
+	\includegraphics[width=.5\linewidth]{images/route_sensor_query.png}\\
+	\footnotesize{RouteSensor pattern, from \todotext{cite train paper}}\normalsize
+	
+	\vspace{1\baselineskip}
+	\begin{itemize}
+		\item If a switch is \emph{monitored by} a sensor, the route that uses the switch must \emph{require} the sensor.
+		\item If the above pattern is found, there is an error in the model.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Example  Query: ConnectedSegments}
+	\textbf{ConnectedSegments:}\\
+	\includegraphics[width=.38\linewidth]{images/connected_segments_query.png}\\
+	\footnotesize{ConnectedSegments pattern, from \todotext{cite train paper}}\normalsize
+	
+	\begin{itemize}
+		\item A sensor must not monitor more than five segments in a row.
+		\item If the above pattern is found, there is an error in the model.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Performance}
+	Comparing:
+	\begin{itemize}
+		\item Three RAG variants
+		\begin{itemize}
+			\item Name lookup
+				\begin{tikzpicture}	
+					% Namelookup incremental: rectangle
+					\draw [fill=HKS07,draw=HKS07,line width=.5] rectangle (.2,.2);
+					\draw [draw=HKS07,line width=1] (-.2,.1) -- (.4,.1);
+				\end{tikzpicture}
+			\item Intrinsic Reference Attributes
+				\begin{tikzpicture}
+					% Optimized incremental: circle
+					\draw [fill=tudcyan,draw=tudcyan,line width=.5mm] circle (.1);
+					\draw [draw=tudcyan,line width=1] (-.3,0) -- (.3,0);
+				\end{tikzpicture}
+			\item Grammar extension
+					\begin{tikzpicture}
+						% Namelookup incremental: unfilled rectangle
+						\draw [fill=HKS65,draw=HKS65,line width=0] (.12,.24) -- (.24,0) -- (0,0);
+						\draw [draw=HKS65,line width=1] (-.12,.1) -- (.36,.1);
+					\end{tikzpicture}
+		\end{itemize}
+		\item A non-incremental graph database solution
+		\begin{itemize}
+			\item Tinkergraph \todotext{cite tinkergraph, maybe URL}
+		\end{itemize}
+		\item An incremental Java modeling solution
+		\begin{itemize}
+			\item Viatra \todotext{cite Viatra, maybe URL}
+		\end{itemize}
+	\end{itemize}
+	
+\end{frame}
+
+% trim: left bottom right top
+%% Read+Check
+\begin{frame}
+\frametitle{Read+Check: Route Sensor (Repair)}
+	\absolutetikz{
+		\node[anchor=north west] (pic) at (10mm,10mm) {\includegraphics[width=.5\linewidth,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/repair-Read-and-Check-RouteSensor.pdf}};
+    \node[anchor=north west,fill=white,xshift=-36mm,yshift=18mm] at (pic) {\rotatebox{90}{Execution time [ms]}};
+    \node[anchor=north west,fill=white,align=center,xshift=-4mm,yshift=-20mm] at (pic) {Model size\\\#Elements};
+    \node[anchor=north west] (legend) at (10mm,65mm) {\includegraphics[width=\linewidth,keepaspectratio]{images/diagram-legend}};
+	}
+\end{frame}
+
+\begin{frame}
+\frametitle{Read+Check: Connected Segments (Repair)}
+	\absolutetikz{
+		\node[anchor=north west] (pic) at (10mm,10mm) {\includegraphics[width=.5\linewidth,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/repair-Read-and-Check-ConnectedSegments.pdf}};
+    \node[anchor=north west,fill=white,xshift=-36mm,yshift=18mm] at (pic) {\rotatebox{90}{Execution time [ms]}};
+    \node[anchor=north west,fill=white,align=center,xshift=-4mm,yshift=-20mm] at (pic) {Model size\\\#Elements};
+    \node[anchor=north west] (legend) at (10mm,65mm) {\includegraphics[width=\linewidth,keepaspectratio]{images/diagram-legend}};
+	}
+\end{frame}
+
+%% Transformation+Recheck (Inject)
+\begin{frame}
+\frametitle{Transformation+Recheck: Route Sensor (Inject)}
+	\absolutetikz{
+		\node[anchor=north west] (pic) at (10mm,10mm) {\includegraphics[width=.5\linewidth,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/inject-Transformation-and-Recheck-RouteSensor.pdf}};
+    \node[anchor=north west,fill=white,xshift=-36mm,yshift=18mm] at (pic) {\rotatebox{90}{Execution time [ms]}};
+    \node[anchor=north west,fill=white,align=center,xshift=-4mm,yshift=-20mm] at (pic) {Model size\\\#Elements};
+    \node[anchor=north west] (legend) at (10mm,65mm) {\includegraphics[width=\linewidth,keepaspectratio]{images/diagram-legend}};
+	}
+\end{frame}
+
+\begin{frame}
+\frametitle{Transformation+Recheck: Connected Segments (Inject)}
+	\absolutetikz{
+		\node[anchor=north west] (pic) at (10mm,10mm) {\includegraphics[width=.5\linewidth,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/inject-Transformation-and-Recheck-ConnectedSegments.pdf}};
+    \node[anchor=north west,fill=white,xshift=-36mm,yshift=18mm] at (pic) {\rotatebox{90}{Execution time [ms]}};
+    \node[anchor=north west,fill=white,align=center,xshift=-4mm,yshift=-20mm] at (pic) {Model size\\\#Elements};
+    \node[anchor=north west] (legend) at (10mm,65mm) {\includegraphics[width=\linewidth,keepaspectratio]{images/diagram-legend}};
+	}
+\end{frame}
+
+%% Transformation+Recheck (Repair)
+\begin{frame}
+\frametitle{Transformation+Recheck: Route Sensor (Repair)}
+	\absolutetikz{
+		\node[anchor=north west] (pic) at (10mm,10mm) {\includegraphics[width=.5\linewidth,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/repair-Transformation-and-Recheck-RouteSensor.pdf}};
+    \node[anchor=north west,fill=white,xshift=-36mm,yshift=18mm] at (pic) {\rotatebox{90}{Execution time [ms]}};
+    \node[anchor=north west,fill=white,align=center,xshift=-4mm,yshift=-20mm] at (pic) {Model size\\\#Elements};
+    \node[anchor=north west] (legend) at (10mm,65mm) {\includegraphics[width=\linewidth,keepaspectratio]{images/diagram-legend}};
+	}
+\end{frame}
+
+\begin{frame}
+\frametitle{Transformation+Recheck: Connected Segments (Repair)}
+	\absolutetikz{
+		\node[anchor=north west] (pic) at (10mm,10mm) {\includegraphics[width=.5\linewidth,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/repair-Transformation-and-Recheck-ConnectedSegments.pdf}};
+    \node[anchor=north west,fill=white,xshift=-36mm,yshift=18mm] at (pic) {\rotatebox{90}{Execution time [ms]}};
+    \node[anchor=north west,fill=white,align=center,xshift=-4mm,yshift=-20mm] at (pic) {Model size\\\#Elements};
+    \node[anchor=north west] (legend) at (10mm,65mm) {\includegraphics[width=\linewidth,keepaspectratio]{images/diagram-legend}};
+	}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Results}
+	\begin{itemize}
+		\item Performs on par with state-of-the-art incremental model tools
+		\item Faster for some queries
+		\item Opens possibility for RAGs on Models
+	\end{itemize}
+\end{frame}
+
+\end{document}

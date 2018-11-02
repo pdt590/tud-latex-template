@@ -1,0 +1,6 @@
+public java.util.List<Sensor> Route.requires() {
+  RefList<Sensor> l = get_impl_requires();
+  return l != null ? Collections.unmodifiableList(l) : Collections.emptyList();
+}
+public void Route.addToRequires(Sensor o) { /* ... */ }
+public void Route.removeFromRequires(Sensor o) { /* ... */ }

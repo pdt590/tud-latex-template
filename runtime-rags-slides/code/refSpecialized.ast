@@ -1,0 +1,6 @@
+rel Route.requires* -> Sensor;
+rel Route.entry? -> Semaphore;
+rel Route.exit? -> Semaphore;
+rel SwitchPosition.target <-> Switch.positions*;
+rel Sensor.monitors* <-> TrackElement.monitoredBy*;
+rel TrackElement.connectsTo* -> TrackElement;

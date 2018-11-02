@@ -1,0 +1,6 @@
+syn Sensor SensorRef.getSensor() {
+	for (Sensor s : getRoot().sensors())
+		if (s.id() == this.getValue())
+			return s;
+	return null;
+}

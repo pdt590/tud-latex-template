@@ -1,0 +1,36 @@
+\begin{tikzpicture}[remember picture,overlay,
+helpbox/.style={draw=red,anchor=north west},
+helpline/.style={draw=red},
+bluebox/.style={fill=HKS41,anchor=south west},
+infobox/.style={fill=HKS44!15,anchor=north west},
+]
+\node at (current page.north west) {
+	\begin{tikzpicture}[remember picture,overlay]
+	\node[bluebox,minimum width=400mm,minimum height=84mm] at (32mm,-1169mm) {};
+	\node[anchor=north west,color=white,font=\footnotesize] at (28mm,-1078mm) {
+	\begin{minipage}{774mm}
+	\textbf{Acknowledgments:} This work is partly supported by the German Research Foundation (DFG) in the SFB 912 “Highly Adaptive Energy-Efficient Computing”, the project “RISCOS” and within the Research Training Group “Role-based Software Infrastructures for continuous-context-sensitive Systems” (GRK 1907), and by the German Federal Ministry of Education and Research within the project “OpenLicht”. This work is also partly supported by the Swedish Governmental Agency for	Innovation Systems (VINNOVA) in the PIIA project 2017-02371 and by the Wallenberg AI, Autonomous Systems and Software Program (WASP) funded by the Knut and Alice Wallenberg Foundation (KAW).
+
+	\end{minipage}
+	};
+	\node[text=white,anchor=north west,align=left] at (28mm,-1117.5mm) {
+  \footnotesize\begin{tabular}{r@{\hskip 10mm}l@{\hskip 10mm}l@{\hskip 30mm}l@{\hskip 10mm}l}
+		\textbf{Contact: } & Johannes Mey & \url{johannes.mey@tu-dresden.de} & Görel Hedin & gorel.hedin@cs.lth.se \\
+    & René Schöne & \url{rene.schoene@tu-dresden.de} & Emma Söderberg & \url{emma.soderberg@cs.lth.se} \\
+    & Thomas Kühn & \url{thomas.kuehn3@tu-dresden.de} & Niklas Fors & \url{niklas.fors@cs.lth.se}  \\
+    & Uwe Aßmann  & \url{uwe.assmann@tu-dresden.de} & Jesper Öqvist & \url{jesper.oqvist@cs.lth.se} 
+  \end{tabular}
+%    \\[-6mm]
+%		\scriptsize{Funding:}\\[-6mm]
+%		\scriptsize{Spokesman:}\\[-6mm]
+%		\scriptsize{Project Website:}
+		};
+%	\node[text=white,anchor=north west,align=left] at (87mm,-1147.5mm) {
+%		\phantom{\scriptsize\textbf{Contact}} \\[-6mm]
+%		\scriptsize{DFG (GRK 1907)}\\[-6mm]
+%		\scriptsize{Prof. Dr.-Ing. Wolfgang Lehner}\\[-6mm]
+%		\scriptsize{rosi-project.org}
+%		};
+	\end{tikzpicture}
+};
+\end{tikzpicture}

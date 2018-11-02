@@ -1,0 +1,66 @@
+\ProvidesPackage{beamerinnerthemetud}[2018/09/14]
+
+\mode<presentation>
+
+\setbeamertemplate{title page}
+{
+
+
+	\begin{tikzpicture}[overlay,remember picture]
+		\node[inner sep=0,anchor=north west,xshift=\beamer@tud@title@tudlogox,yshift=-\beamer@tud@title@tudlogoy] at (current page.north west) (logo) {\includegraphics[width=\beamer@tud@title@tudlogow]{images/tu_logo_blue.pdf}};
+		% the logo: either DDC or a self-defined logo
+		\node[inner sep=0,anchor=north east,xshift=-.66\beamer@tud@title@tudlogox,yshift=-\beamer@tud@title@tudlogoy] at (current page.north east) (secondlogo) {\includegraphics[height=\beamer@tud@title@ddclogoh]{\tud@logo}};
+		\node[at=(current page.south east),anchor=south east,inner sep=0pt] (background) {\includegraphics[width=\paperwidth]{\tud@backgroundimage}};
+		\node[at=(background.north),fill=white,opacity=.4,anchor=north,minimum width=\paperwidth,minimum height=\beamer@tud@title@sepbarh] {};
+	\end{tikzpicture}
+
+
+%	\includegraphics[width=\paperwidth,height=\paperheight]{images/bg43.pdf}
+	\usebeamercolor[fg]{normal text/titlepage}
+	%
+	%first some space
+	\vfill
+	\vskip2ex
+	% start with the department faculty institute chair
+	\ifx\tud@department\tud@empty
+	\else
+		\usebeamerfont{author}\tud@department\hskip1ex
+	\fi
+	\ifx\tud@faculty\tud@empty
+	\else
+		\usebeamerfont{title faculty}\tud@faculty\hskip1ex
+	\fi
+	\ifx\tud@institute\tud@empty
+	\else
+		\usebeamerfont{author}\tud@institute\hskip1ex
+	\fi
+	\ifx\tud@chair\tud@empty
+	\else
+	\usebeamerfont{author}\tud@chair
+	\fi
+	\vfill
+	% continue with the author
+	\ifx\tud@fancyauthor\@empty
+	\else
+	\vskip4ex
+	\usebeamerfont{author}\tud@fancyauthor
+	\fi
+	%then some space
+	\vskip4ex
+	%
+	% then the title
+	\usebeamerfont{title}\inserttitle\par
+	\ifx\insertsubtitle\@empty
+	\else
+	\usebeamerfont{subtitle}\insertsubtitle
+	\fi
+	\ifx\insertdate\@empty
+	\else
+	\vskip2ex
+	\usebeamerfont{date}\insertdate%
+	\fi
+	\vfill
+	\vfill
+}
+
+\mode<all>

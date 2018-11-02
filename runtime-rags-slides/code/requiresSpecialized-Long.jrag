@@ -1,0 +1,26 @@
+// rel Route.requires* <-> Sensor.requiredBy*
+public java.util.List<Sensor> Route.requires() {
+  RefList<Sensor> l = get_impl_requires();
+  return l != null ? Collections.unmodifiableList(l) : Collections.emptyList();
+}
+public void Route.addToRequires(Sensor o) {
+  assertNotNull(o);
+  RefList<Sensor> list = get_impl_requires();
+  if (list == null) { list = new RefList<>(); }
+  RefList<Route> list2 = o.get_impl_requiredBy();
+  if (list2 == null) {list2 = new RefList<>(); }
+  list.add(o);
+  list2.add(this);
+  set_impl_requires(list);
+  o.set_impl_requiredBy(list2);
+}
+public void Route.removeFromRequires(Sensor o) {
+  assertNotNull(o);
+  RefList<Sensor> list = get_impl_requires();
+  if (list != null && list.remove(o)) {
+    RefList<Route> list2 = o.get_impl_requiredBy();
+    if (list2 != null) list2.remove(this);
+    set_impl_requires(list);
+    o.set_impl_requiredBy(list2);
+  }
+}

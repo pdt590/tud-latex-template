@@ -1,0 +1,260 @@
+\RequirePackage{fix-cm}
+\documentclass[rgb,cdgeometry=no,cd=true,cdhead=bicolor,cdfont=false,cdfoot=color,cdfont=nodin,english,paper=A0,fontsize=32pt,DIV=25,usegeometry]{tudscrposter}
+\usepackage[rgb]{xcolor}
+\usepackage{selinput}\SelectInputMappings{adieresis={ä},germandbls={ß}}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.arrows,calc}
+
+\usepackage{ifthen}
+\usepackage{environ}
+\usepackage[english]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\usepackage[absolute]{textpos}
+
+\input{environments.tex}
+\input{lst.tex}
+
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage[default, scale=0.8]{opensans}
+
+\usepackage{fontawesome5}
+\newcommand{\thumbsup}{\faIcon[regular]{thumbs-up}}
+
+%\renewcommand{\thebibliography}{}
+
+\begin{document}
+\input{header.tex}
+\begin{tikzpicture}[remember picture,overlay]%
+\node at (700mm,200mm) {\includegraphics[width=50mm,page=1]{images/badges.pdf}};%
+\node at (755mm,200mm) {\includegraphics[width=50mm,page=2]{images/badges.pdf}};%
+\end{tikzpicture}%
+\begin{contentbox}[140mm]{Problem: Efficient Navigation of Non-containment References}{776mm}{HKS41}
+\begin{minipage}{255mm}
+%% Ecore model
+Metamodel of the Trainbenchmark~\cite{szarnyas_train_2017}:\\
+\includegraphics[height=150mm,keepaspectratio]{images/ecore-no-enums}
+\end{minipage}
+%% Arrows ecore -> runtime model
+\begin{tikzpicture}[remember picture,overlay,
+        fat arrow/.style={single arrow,thick,draw=HKS41!30,
+                          single arrow head extend=40mm,
+                          single arrow tip angle=130,
+                          single arrow head extend=1mm,
+                          fill=HKS41!10,minimum height=35mm,
+                          minimum width=100mm}
+]
+\node at (-35mm,17mm) [fat arrow] {};
+\end{tikzpicture}%
+\begin{minipage}{140mm}
+\vspace{-22mm}
+%% Runtime model
+\centering General Runtime model:\\
+\includegraphics[height=130mm,keepaspectratio]{images/process-ag.pdf}
+\end{minipage}
+%% Zoom effect
+\begin{tikzpicture}[remember picture,overlay]
+\draw [draw=HKS33,line width=1mm] (-60mm,-12mm) rectangle (-50mm,-6mm);
+\draw [draw=HKS33,thick,dashed] (-60mm,-6mm) -- (10mm,80mm); % left upper
+%\draw [draw=HKS33,thick,dashed] (-50mm,-6mm) -- (10mm,40mm); % right upper
+%\draw [draw=HKS33,thick,dashed] (-50mm,-12mm) -- (10mm,-30mm); % right lower
+\draw [draw=HKS33,thick,dashed] (-60mm,-12mm) -- (10mm,-50mm); % left lower
+% fill area with transparent color
+\draw [fill=HKS33, opacity=0.2] (-60mm,-6mm) -- (10mm,80mm) -- (10mm,-50mm) -- (-60mm,-12mm) -- (-50mm,-12mm) -- (-50mm,-6mm);
+% draw an rectangle around next minipage
+\draw [draw=HKS33] (10mm,80mm) rectangle (350mm,-50mm);
+\end{tikzpicture}%
+\begin{minipage}{340mm}
+\vspace{-22mm}
+\begin{itemize}
+\item RAGs~\cite{hedin2000reference} can be used for models@runtime providing some advantages
+\begin{itemize}
+\item \textit{Separation of structure and computation}
+\item \emph{Shorthands} for navigation and computation on trees
+\item \emph{Efficiency} through memoization of computed values
+\item \textit{Incremental computation}, i.e., invalidating of outdated cached values
+\end{itemize}
+\item \textbf{Major issue:} Non-containment references can not be encoded \emph{efficiently} w.r.t. performance and consistency
+\end{itemize}
+\end{minipage}
+\end{contentbox}
+%% Arrows between variants
+\begin{tikzpicture}[remember picture,overlay,
+        fat arrow/.style={single arrow,thick,draw=HKS41!20,
+                          single arrow head extend=30mm,
+                          single arrow tip angle=160,
+                          single arrow head extend=1mm,
+                          fill=HKS41!8,minimum height=20mm,
+                          minimum width=100mm}]
+\node at (330mm,-180mm) [fat arrow] {};
+\node at (512mm,-180mm) [fat arrow] {};
+\end{tikzpicture}%
+\vboxsep%
+\vspace{5mm} % To adjust space between second and third part :)
+%% Minipage for state-of-the-art boxes
+\begin{minipage}{509mm}
+%\vspace{-26mm}
+\begin{contentbox}[60mm]{State-of-the-Art Using RAGs and JastAdd~\cite{jastadd}}{509mm}{HKS41}
+%\centering
+\begin{minipage}{285mm}
+%% Shared grammar parts
+%\boxheadline{Excerpt of the used grammar}
+%Excerpt of the used grammar
+\lstinputlisting[language=AST,style=unboxed]{code/refs-full.ast}
+\end{minipage}
+%
+\begin{minipage}{220mm}
+%% Shared attribute Route.requires()
+%Example of an attribute for an inverse relation
+\lstinputlisting[language=JRAG,style=unboxed,frame=l]{code/requiresNamelookup.jrag}
+\end{minipage}
+\end{contentbox}
+\clinesep%
+%% Namelookup box
+\begin{contentbox}[106mm]{\quad Name Lookup}{326mm}{HKS07}
+\begin{minipage}{135mm}
+  \lstinputlisting[language=AST,style=unboxed]{code/refNamelookup.ast}
+  \boxheadline{Idiomatic Approach}
+  \lstinputlisting[language=JRAG,style=unboxed]{code/resolveNamelookup-Naive.jrag}
+\end{minipage}
+\begin{minipage}{196mm}
+\begin{tikzpicture}[remember picture,overlay]
+\draw (-5mm,10mm) -- (-5mm,-80mm);
+\end{tikzpicture}
+  \boxheadline{Idiomatic Approach with a Map}
+  \lstinputlisting[language=JRAG,style=unboxed,basicstyle=\tiny\ttfamily]{code/resolveNamelookup-Tight.jrag}
+\end{minipage}
+\end{contentbox}
+%
+\hboxsep %
+%% Intrinsic references box
+\begin{contentbox}[106mm]{\quad Intrinsic References}{168mm}{tudcyan}
+\lstinputlisting[language=AST,style=unboxed]{code/refOptimized.ast}
+{
+  \setlist{leftmargin=8mm}
+  \begin{itemize}
+    \item Name-Analysis done in deserializer and after every edit
+    \item Faster evaluation and less cache invalidation
+  \end{itemize}
+}
+\end{contentbox}
+\end{minipage}
+%
+\hboxsep
+%% Grammar extension box
+\begin{minipage}{254mm}
+%\vspace{-24mm}
+\begin{contentbox}[210mm]{\quad Grammar Extension}{254mm}{HKS65}
+\boxheadline{Introducing Relations}
+\lstinputlisting[language=AST,frame=]{code/refSpecialized.ast}
+\boxheadline{Adding the Preprocessor \emph{RelAst}}
+\includegraphics[width=240mm,keepaspectratio]{images/relast-process}
+\boxheadline{Generated API}
+\lstinputlisting[language=JRAG,style=unboxed]{code/requiresSpecialized.jrag}
+\end{contentbox}
+\end{minipage}
+%% Draw the symbols for the legend onto the three content boxes, remember to create no newlines
+\begin{tikzpicture}[remember picture, overlay]%
+%% Coordinates
+\coordinate (nl-no) at (105mm,134mm);
+\coordinate (nl-inc) at (105mm,124mm);
+\coordinate (opt-no) at (350mm,135mm);
+\coordinate (opt-inc) at (350mm,125mm);
+\coordinate (spec-no) at (570mm,238mm);
+\coordinate (spec-inc) at (570mm,228mm);
+% Namelookup normal: unfilled rectangle
+\draw [draw=HKS07,line width=1mm] (nl-no) rectangle ($ (nl-no) + (4mm,4mm) $);
+\draw [draw=HKS07,line width=1mm] (nl-no) ++ (-4mm,2mm) -- ($ (nl-no) + (8mm,2mm) $);
+% Namelookup incremental: unfilled rectangle
+\draw [fill=HKS07,draw=HKS07,line width=1mm] (nl-inc) rectangle ($ (nl-inc) + (4mm,4mm) $);
+\draw [draw=HKS07,line width=1mm] (nl-inc) ++ (-4mm,2mm) -- ($ (nl-inc) + (8mm,2mm) $);
+% Optimized normal: unfilled circle
+\draw [draw=tudcyan,line width=1mm] (opt-no) circle (3mm);
+\draw [draw=tudcyan,line width=1mm] (opt-no) ++ (-6mm,0mm) -- ($ (opt-no) + (7mm,0mm) $);
+% Optimized incremental: unfilled circle
+\draw [fill=tudcyan,draw=tudcyan,line width=1mm] (opt-inc) circle (3mm);
+\draw [draw=tudcyan,line width=1mm] (opt-inc) ++ (-6mm,0mm) -- ($ (opt-inc) + (7mm,0mm) $);
+% Specialized normal: unfilled triangle
+\draw [draw=HKS65,line width=1mm] (spec-no) -- ($ (spec-no) + (3mm,6mm) $) -- ($ (spec-no) + (6mm,0mm) $) -- (spec-no);
+\draw [draw=HKS65,line width=1mm] (spec-no) ++ (-4mm,2.5mm) -- ($ (spec-no) + (9mm,2.5mm) $);
+% Specialized incremental: unfilled triangle
+\draw [fill=HKS65,draw=HKS65,line width=1mm] (spec-inc) -- ($ (spec-inc) + (3mm,6mm) $) -- ($ (spec-inc) + (6mm,0mm) $) -- (spec-inc);
+\draw [draw=HKS65,line width=1mm] (spec-inc) ++ (-4mm,2.5mm) -- ($ (spec-inc) + (9mm,2.5mm) $);
+%% Labels
+%\node [text=HKS65,anchor=east,yshift=2mm,xshift=-3mm] at (spec-no) {\footnotesize normal};
+%\node [text=HKS65,anchor=east,yshift=2mm,xshift=-3mm] at (spec-inc) {\footnotesize incremental};
+\end{tikzpicture}%
+\vboxsep %
+%% Eval box
+\begin{contentbox}[280mm]{Evaluation within the Trainbenchmark}{776mm}{HKS41}
+\begin{minipage}{210mm}
+\vspace{-10mm}
+\boxheadline{Trainbenchmark Process}
+\hspace{15mm}\includegraphics[width=200mm]{images/tb_process}\\[6mm]
+%\boxheadline{Less Code with Grammar Extension}
+\vspace{-6mm}
+%\boxheadline{Advantages of our Grammar Extension}
+\textbf{\fontsize{36pt}{\baselineskip}\selectfont{Advantages of our Grammar Extension}}
+{
+  \setlist{leftmargin=20mm}
+  \setlist{itemsep=0pt}
+  \begin{itemize}
+    \item[\thumbsup] Less boilerplate code to write
+    \lstinputlisting[language=diff,breaklines=false,xleftmargin=-4mm]{code/transInjectRouteSensor.diff}%
+    \vspace{-10mm}
+    \item[\thumbsup] More consistency
+    \item[\thumbsup] Better performance
+  \end{itemize}
+}
+\end{minipage}
+~\quad~
+\begin{minipage}{540mm}
+% trim: left bottom right top
+%% Read and Check (of repair)
+\begin{minipage}{190mm}
+\hspace{80mm} \textbf{Read + Check}\par\vspace{3mm}
+\rotatebox{90}{\textbf{\hspace{20mm} Route Sensor}}
+\hspace{2.35mm}\includegraphics[height=10.5cm,keepaspectratio,clip,trim=0cm 4.2cm 0cm 1.35cm]{images/repair-Read-and-Check-RouteSensor.pdf}
+\\[4mm]
+\noindent\rotatebox{90}{\textbf{\hspace{28mm} Connected Segments}}
+\includegraphics[height=13cm,keepaspectratio,clip,trim=0cm 2.2cm 0cm 1.35cm]{images/repair-Read-and-Check-ConnectedSegments.pdf}
+\end{minipage}
+%% Transformation and Recheck - Inject
+\begin{minipage}{150mm}
+\hspace{2mm} \textbf{Inject, Transformation + Recheck}\par\vspace{2mm}
+\includegraphics[height=10.5cm,keepaspectratio,clip,trim=2.3cm 4.2cm 0cm 1.35cm]{images/inject-Transformation-and-Recheck-RouteSensor.pdf}
+\\[4mm]
+\noindent\includegraphics[height=13cm,keepaspectratio,clip,trim=2.3cm 2.2cm 0cm 1.35cm]{images/inject-Transformation-and-Recheck-ConnectedSegments.pdf}
+\end{minipage}
+%% Transformation and Recheck - Repair
+\begin{minipage}{170mm}
+\hspace{2mm} \textbf{Repair, Transformation + Recheck}\par\vspace{2mm}
+\includegraphics[height=10.5cm,keepaspectratio,clip,trim=2.3cm 4.2cm 0cm 1.35cm]{images/repair-Transformation-and-Recheck-RouteSensor.pdf}
+\\[4mm]
+\noindent\includegraphics[height=13cm,keepaspectratio,clip,trim=2.3cm 2.2cm 0cm 1.35cm]{images/repair-Transformation-and-Recheck-ConnectedSegments.pdf}
+\end{minipage}
+%% Legend
+\includegraphics[width=530mm]{images/diagram-legend}
+\end{minipage}
+\clinesep%
+\end{contentbox}
+\titlebox{Continuous Model Validation using Reference Attribute Grammars}{Johannes~Mey\textsuperscript{1}, René~Schöne\textsuperscript{1}, Görel~Hedin\textsuperscript{2}, Emma~Söderberg\textsuperscript{2}, Thomas~Kühn\textsuperscript{1}, Niklas~Fors\textsuperscript{2}, Jesper~Öqvist\textsuperscript{2}, and Uwe~Aßmann\textsuperscript{1}\\[5mm]\small\textsuperscript{1}Technische Universität Dresden\\[-4mm]\textsuperscript{2}Lund University}
+\begin{literaturebox}
+\begingroup
+\renewcommand{\section}[2]{}%
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{literaturebox}
+
+\input{footer.tex}
+
+%\graduated
+\end{document}

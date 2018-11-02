@@ -1,0 +1,14 @@
+syn Collection<Match> Route.routeSensorMatches() {
+  List<Match> matches = new ArrayList<>();
+  Collection<Sensor> requiredSensors = requires();
+  for (SwitchPosition sp : getSwitchPositionList()) {
+    Switch sw = sp.target();
+    for (Sensor sensor : sw.monitoredBy()) {
+      boolean validSensor = false;
+      for (Sensor sensor2 : requiredSensors)
+        if (sensor2 == sensor) { validSensor = true; break; }
+      if(!validSensor) { matches.add(new Match(this, sensor, sp, sw)); }
+    }
+  }
+  return matches;
+}

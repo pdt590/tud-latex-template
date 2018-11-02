@@ -1,0 +1,10 @@
+RailwayContainer ::= Route* Region*;
+abstract RailwayElement ::= <Id:int>;
+Region : RailwayElement ::= TrackElement* Sensor*;
+Semaphore : RailwayElement ::= <Signal:Signal>;
+Route : RailwayElement ::= <Active:boolean> SwitchPosition*;
+SwitchPosition : RailwayElement ::= <Position:Position>;
+Sensor : RailwayElement;
+abstract TrackElement:RailwayElement;
+Segment : TrackElement ::= <Length:int> Semaphore*;
+Switch : TrackElement ::= <CurrentPosition:Position>;

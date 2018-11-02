@@ -1,0 +1,5 @@
+Region : RailwayElement ::= TrackElement* Sensor*;
+Route : RailwayElement ::= <Active:boolean> SwitchPosition* requires:Ref* [entry:Ref] [exit:Ref];
+SwitchPosition : RailwayElement ::= <Position:Position> target:Ref;
+Sensor : RailwayElement ::= monitors:Ref*;
+abstract TrackElement : RailwayElement ::= connectsTo:Ref*;

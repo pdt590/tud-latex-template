@@ -1,0 +1,59 @@
+\begin{tikzpicture}
+
+\pgfdeclarelayer{bg}    % declare background layer
+\pgfsetlayers{bg,main}  % set the order of the layers (main is the standard layer)
+
+\tikzstyle{data} = [thick,draw,font=\ttfamily]
+\tikzstyle{process} = [thick,draw,font=\itshape,rounded corners=2mm]
+\tikzstyle{myarrow} = [-latex,thick]
+
+% Nodes
+\node [data] (grammar) at (0,0) {Grammar.relast};
+\node [process, right=10mm of grammar, align=center] (relast) {Relast-\\compiler};
+\node [data, above right=-4mm and 10mm of relast] (genGrammar) {GenGrammar.ast\phantom{ja}};
+\node [data, below right=-4mm and 10mm of relast] (genRelation) {GenRelation.jadd};
+
+% % Attributes below GenRelation
+% \node [data, fill=white, below right=4mm and 10mm of relast] (attr) {Attribute.jrag};
+% \begin{pgfonlayer}{bg}    % select the background layer
+%   \node [data, xshift=4mm] (attr2) at (attr) {\phantom{Attribute.jrag}};
+%   \node [data, fill=white, yshift=1.5mm, xshift=2mm] at (attr) {\phantom{Attribute.jrag}};
+% \end{pgfonlayer}
+% 
+% \draw [myarrow] (attr2.east) -- (jastadd.190);
+
+\node [process, right=50mm of relast] (jastadd) {JastAdd};
+
+% % Attributes above JastAdd
+% \node [data, fill=white, above=3mm of jastadd] (attr) {Attribute.jrag};
+% \begin{pgfonlayer}{bg}    % select the background layer
+%   \node [data, xshift=4mm] (attr2) at (attr) {\phantom{Attribute.jrag}};
+%   \node [data, fill=white, yshift=1.5mm, xshift=2mm] at (attr) {\phantom{Attribute.jrag}};
+% \end{pgfonlayer}
+% \draw [myarrow] (attr.south) -- (jastadd.north);
+
+% Attributes above grammar.relast
+\node [data, fill=white, above=3mm of grammar] (attr) {Attribute.jrag};
+\begin{pgfonlayer}{bg}    % select the background layer
+  \node [data, yshift=3mm, xshift=4mm] (attr2) at (attr) {\phantom{Attribute.jrag}};
+  \node [data, fill=white, yshift=1.5mm, xshift=2mm] at (attr) {\phantom{Attribute.jrag}};
+\end{pgfonlayer}
+\draw [myarrow] (attr2.east) -| (jastadd.north);
+
+
+\node [data, fill=white, right=10mm of jastadd] (java) {ClassA.java};
+\begin{pgfonlayer}{bg}    % select the background layer
+  \node [data, yshift=3mm, xshift=4mm] at (java) {\phantom{ClassA.java}};
+  \node [data, fill=white, yshift=1.5mm, xshift=2mm] at (java) {\phantom{ClassA.java}};
+\end{pgfonlayer}
+
+\draw [myarrow] (grammar.east) -- (relast.west);
+\draw [myarrow] (relast.east) -- (genGrammar.west);
+\draw [myarrow] (relast.east) -- (genRelation.west);
+
+\draw [myarrow] (genGrammar.east) -- (jastadd.170);
+\draw [myarrow] (genRelation.east) -- (jastadd.west);
+
+\draw [myarrow] (jastadd.east) -- (java.west);
+
+\end{tikzpicture}

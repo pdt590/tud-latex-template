@@ -1,0 +1,13 @@
+image: aergus/latex
+
+build:
+  stage: build
+  tags:
+    - dockered
+  artifacts:
+    paths:
+      - runtime-rags.pdf
+      - poster.pdf
+  script:
+    - latexmk -f -pdf runtime-rags.tex
+    - latexmk -f -pdf poster.tex

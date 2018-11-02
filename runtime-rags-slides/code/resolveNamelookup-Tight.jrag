@@ -1,0 +1,10 @@
+syn Map<Integer, Sensor> RailwayContainer.sensorMap() {
+  Map<Integer, Sensor> sensors = new HashMap<>();
+  for (Region region : getRegionList()) {
+    for (Sensor sensor : region.getSensorList())
+    	sensors.put(sensor.id(), sensor);
+  }
+  return sensors;
+}
+syn Sensor SensorRef.getSensor() =
+	getRoot().sensorMap().get(this.getValue());

@@ -1,0 +1,48 @@
+\ProvidesPackage{beamercolorthemetud}[2018/09/14]
+
+\PassOptionsToPackage{RGB}{tudscrcolor}
+\RequirePackage[full]{tudscrcolor}
+\RequirePackage{xcolor}
+
+% some colors are currently missing in tudscrcolor
+\definecolor{tudcyan}{cmyk/RGB/rgb}{%
+	1.00,0.00,0.00,0.00/000,158,224/0.0,0.6196078431372549,0.8784313725490196%
+}%
+
+
+\mode<presentation>
+
+% Settings
+%\setbeamercolor*{title page header}{fg=white}
+%\setbeamercolor*{author}{fg=white}
+%\setbeamercolor*{date}{fg=white}
+
+\setbeamercolor{normal text/titlepage}{fg=white,bg=HKS41K100}%
+\setbeamercolor{title}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{subtitle}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{supertitle}{parent=subtitle}%
+\setbeamercolor{author/titlepage}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{headline/titlepage}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{logo/titlepage}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{faculty/titlepage}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{department/titlepage}{use=einrichtung/titlepage,fg=einrichtung/titlepage.fg}%
+\setbeamercolor{institute/titlepage}{use=einrichtung/titlepage,fg=einrichtung/titlepage.fg}%
+\setbeamercolor{chair/titlepage}{use=einrichtung/titlepage,fg=einrichtung/titlepage.fg}%
+\setbeamercolor{upper separation line head/titlepage}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+\setbeamercolor{lower separation line head/titlepage}%
+{use=upper separation line head/titlepage,fg=upper separation line head/titlepage.fg}%
+\setbeamercolor{date in head/foot/titlepage}{use=normal text/titlepage,fg=normal text/titlepage.fg}%
+
+
+\setbeamercolor{normal text}{fg=HKS41K100,bg=white}
+\setbeamercolor{structure}{fg=HKS41K100}
+\setbeamercolor{alerted text}{fg=HKS07K100}
+\setbeamercolor{alternate palette}{fg=HKS92K80}
+\setbeamercolor{framesubtitle}{fg=HKS92K80}
+
+\setbeamercolor{info in foot}{fg=HKS92,bg=white}
+
+\setbeamercolor{block title}{fg=white,bg=tudcyan}
+\setbeamercolor{block body}{fg=black,bg=tudcyan!20}
+
+\mode<all>

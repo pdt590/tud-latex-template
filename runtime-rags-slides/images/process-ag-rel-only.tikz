@@ -1,0 +1,185 @@
+\begin{tikzpicture}[anchor=center]
+  \node[draw=white,minimum width=6cm,minimum height=6cm] at (0,0) {};
+  \useasboundingbox (0cm,0cm) rectangle (0cm,0cm);
+
+  \newcommand*{\mytextstyle}{\sffamily\Large\bfseries\color{white}}
+  \newcommand{\arcarrow}[8]{%
+  % inner radius, middle radius, outer radius, start angle,
+  % end angle, tip protusion angle, options, text
+  \pgfmathsetmacro{\rin}{#1}
+  \pgfmathsetmacro{\rmid}{#2}
+  \pgfmathsetmacro{\rout}{#3}
+  \pgfmathsetmacro{\astart}{#4}
+  \pgfmathsetmacro{\aend}{#5}
+  \pgfmathsetmacro{\atip}{#6}
+  \fill[#7] (\astart:\rin) arc (\astart:\aend:\rin)
+       -- (\aend+\atip:\rmid) -- (\aend:\rout) arc (\aend:\astart:\rout)
+       -- (\astart+\atip:\rmid) -- cycle;
+  \path[font = \sffamily, decoration = {text along path, text = {|\mytextstyle|#8},
+    text align = {align = center}, raise = -0.7ex}, decorate]
+    (\astart+\atip:\rmid) arc (\astart+\atip:\aend+\atip:\rmid);
+}
+\newcommand{\arcarrowinner}[8]{%
+% inner radius, middle radius, outer radius, start angle,
+% end angle, tip protusion angle, options, text
+  \pgfmathsetmacro{\rin}{#1}
+  \pgfmathsetmacro{\rmid}{#2}
+  \pgfmathsetmacro{\rout}{#3}
+  \pgfmathsetmacro{\astart}{#4}
+  \pgfmathsetmacro{\aend}{#5}
+  \pgfmathsetmacro{\atip}{#6}
+  \fill[#7] (\astart:\rin) arc (\astart:\aend:\rin)
+       -- (\aend+\atip:\rmid) -- (\aend:\rout) arc (\aend:\astart:\rout)
+       -- (\astart+\atip:\rmid) -- cycle;
+  \path[font = \sffamily, decoration = {text along path, text = {#8}, text align = {align = center}, raise = -0.7ex}, decorate]
+    (\aend+\atip:\rmid) arc (\aend+\atip:\astart+\atip:\rmid);
+  }
+%     \arcarrowinner{2.4}{2.7}{3}{0}{180}{5}{HKS44!100}{|\sffamily\large\bfseries\color{HKS44!5}|~~~Analyze}
+%     \arcarrow{2.4}{2.7}{3}{180}{360}{5}{tudcyan!100}{|\sffamily\large\bfseries\color{HKS44!5}|Modify~~~}
+%     \arcarrowinner{2.4}{2.7}{3}{183}{186}{5}{HKS44!100}{}
+%     \arcarrowinner{2.4}{2.7}{3}{173.99}{177}{5}{tudcyan!100}{}
+%     \arcarrowinner{2.4}{2.7}{3}{3}{6}{5}{tudcyan!100}{}
+%     \arcarrowinner{2.4}{2.7}{3}{353.99}{357}{5}{HKS44!100}{}
+ 
+  
+% the model
+%/*
+\tikzstyle{object} = [minimum width=16,minimum height=10,draw=HKS92!80,fill=HKS92!80,inner sep=0,text=HKS92!80,font=\ttfamily\tiny]
+\tikzstyle{modelelem} = [minimum width=16,minimum height=10,draw=HKS92!80,fill=HKS92!10,inner sep=0,text=HKS92!80,font=\ttfamily\tiny]
+\tikzstyle{modelebar} = [object,minimum height=7,yshift=-2]
+\tikzstyle{list} = [object,minimum width=5,minimum height=5]
+\tikzstyle{modellist} = [] %object,minimum width=5,minimum height=5
+\tikzstyle{childof} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS92,fill=HKS92]
+\tikzstyle{modelrelcon} = [{Diamond[length=1.8mm,width=.8mm]}-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS92]
+\tikzstyle{modelrelnoncon} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS92]
+\tikzstyle{modelrelbi} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS92,fill=HKS92]
+\tikzstyle{noncon} = [-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS07]
+\tikzstyle{binoncon} = [{Latex[length=1mm,width=1.2mm]}-{Latex[length=1mm,width=1.2mm]},line width=.7,draw=HKS07]
+\tikzstyle{attribute} = [circle,inner sep=0,text=HKS92!20,font=\ttfamily\tiny,fill=HKS33,minimum width=4.5,minimum height=4.5,xshift=9,yshift=2.5]
+\tikzstyle{attribute2} = [attribute,yshift=-5,fill=HKS65]
+\tikzstyle{attribute3} = [attribute,yshift=-5,fill=HKS57]
+%*/
+
+% RAGs
+
+% nodes
+\node[object] at (0,2) (root) {RC};
+\node[list] (RouteList) at (-0.75,1.5) {L};
+\node[list] (SensorList) at (-0.5,0.5) {L};
+\node[list] at (-1.5,0.5) (SwitchPositionList){L};
+\node[list] (RegionList) at (0.25,1.5) {L};
+\node[object] (Route) at (-1.25,1) {Rou.};
+\node[object] at (0.5,1) (Region) {Reg.};
+\node[object] (Sensor) at (-0.75,0) {Sen.};
+\node[list] (TrackElementList) at (1,0.25) {L};
+\node[object] (Segment1) at (-0.5,-0.75) {Seg.};
+\node[object] (Switch) at (0.375,-0.75) {Sw.};
+\node[object] (Segment2) at (1.25,-0.75) {Seg.};
+\node[object] (Segment3) at (1.9036,-0.2012) {Seg.};
+\node[object] (Semaphore1) at (1.25,-1.5) {Sem.};
+\node[object] (Semaphore2) at (-0.5,-1.5) {Sem.};
+\node[object] (SwitchPosition) at (-1.75,0) {SwP.};
+
+% % attributes
+% \visible<2->{
+% %\node[attribute] at (root) {};
+% %\node[attribute2] at (root) {};
+% \node[attribute] at (Region) {};
+% %\node[attribute2] at (Region) {};
+% \node[attribute] at (Route) {};
+% \node[attribute3] at (Route) {};
+% \node[attribute] at (SwitchPosition) {};
+% %\node[attribute2] at (SwitchPosition) {};
+% \node[attribute] at (Sensor) {};
+% %\node[attribute2] at (Sensor) {};
+% \node[attribute] at (Segment1) {};
+% \node[attribute2] at (Segment1) {};
+% \node[attribute] at (Switch) {};
+% \node[attribute2] at (Switch) {};
+% \node[attribute] at (Segment2) {};
+% \node[attribute2] at (Segment2) {};
+% \node[attribute] at (Segment3) {};
+% \node[attribute2] at (Segment3) {};
+% \node[attribute] at (Semaphore1) {};
+% \node[attribute3] at (Semaphore1) {};
+% \node[attribute] at (Semaphore2) {};
+% \node[attribute3] at (Semaphore2) {};
+% }
+% containment edges
+\draw[childof] (root) -- (RouteList);
+\draw[childof] (RouteList) edge (Route);
+\draw[childof] (root) edge (RegionList);
+\draw[childof] (Route) edge (SwitchPositionList);
+\draw[childof] (SwitchPositionList) edge (SwitchPosition);
+\draw[childof] (SensorList) edge (Sensor);
+\draw[childof] (Region) edge (SensorList);
+\draw[childof] (Region) edge (TrackElementList);
+\draw[childof] (TrackElementList) edge (Segment3);
+\draw[childof] (TrackElementList) edge (Segment2);
+\draw[childof] (TrackElementList) edge (Switch);
+\draw[childof] (TrackElementList) edge (Segment1);
+\draw[childof] (RegionList) edge (Region);
+\draw[childof] (Segment1) edge (Semaphore2);
+\draw[childof] (Segment2) edge (Semaphore1);
+
+%\visible<3->{
+% non-containment edges
+\draw[binoncon] plot[smooth, tension=.7] coordinates {(SwitchPosition.south) (-1.5,-0.5) (-0.2451,-0.3248) (Switch.130)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Segment1.south east) (-0.0829,-1.0094) (Switch.south west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Switch.south east) (0.7886,-1.001) (Segment2.south west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Switch.north east) (0.9399,-0.2559) (Segment3.west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Route.190) (-2.0349,0.4957) (-2.1271,-0.4214) (-1.5411,-1.1608) (Semaphore2.west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Route.170) (-2.184,0.4448) (-2.078,-0.7712) (-0.6105,-1.7975) (Semaphore1.south west)};
+\draw[noncon] plot[smooth, tension=.7] coordinates {(Route.south east) (-0.8079,0.5264) (Sensor.north)};
+\draw[binoncon] plot[smooth, tension=.7] coordinates {(Sensor.345) (0.0111,-0.2177) (Switch.north)};
+%}
+
+% Models
+
+% % nodes
+% \node[modelelem] (root) at (-0.25,2) {};
+% \node[modelebar] at (-0.25,2) {};
+% \node[modelelem] (Route) at (-1.5,0.25) {};
+% \node[modelebar] at (-1.5,0.25) {};
+% \node[modelelem] (Region) at (1,1.25) {};
+% \node[modelebar] at (1,1.25) {};
+% \node[modelelem] (Sensor) at (-0.5,0.75) {};
+% \node[modelebar] at (-0.5,0.75) {};
+% \node[modelelem] (Segment1) at (1.25,0.25) {};
+% \node[modelebar] at (1.25,0.25) {};
+% \node[modelelem] (Switch) at (1.25,-0.5) {};
+% \node[modelebar] at (1.25,-0.5) {};
+% \node[modelelem] (Segment2) at (1.25,-1.25) {};
+% \node[modelebar] at (1.25,-1.25) {};
+% \node[modelelem] (Segment3) at (0.5,-1.5) {};
+% \node[modelebar] at (0.5,-1.5) {};
+% \node[modelelem] (Semaphore1) at (-0.5,-0.75) {};
+% \node[modelebar] at (-0.5,-0.75) {};
+% \node[modelelem] (Semaphore2) at (-0.25,0) {};
+% \node[modelebar] at (-0.25,0) {};
+% \node[modelelem] (SwitchPosition) at (-0.75,-1.75) {};
+% \node[modelebar] at (-0.75,-1.75) {};
+% 
+% % containment edges
+% \draw[modelrelcon] (root)  |- (-1,1.5) -|  (Route);
+% \draw[modelrelcon] (root) -| (0.25,2) |- (Region);
+% \draw[modelrelcon] (Route) |- (SwitchPosition);
+% \draw[modelrelcon] (Region) |- (0.5,0.75) |- (Sensor);
+% \draw[modelrelcon] (Region) -| (1.75,1) |- (Segment3);
+% \draw[modelrelcon] (Region) -| (1.75,1) |- (Segment2);
+% \draw[modelrelcon] (Region) -| (1.75,1) |- (Switch);
+% \draw[modelrelcon] (Region)  -| (1.75,1) |- (Segment1);
+% \draw[modelrelcon] (Segment1) -- (Semaphore2);
+% \draw[modelrelcon] (Segment2) -- (Semaphore1);
+% 
+% % non-containment edges
+% \draw[modelrelnoncon] (SwitchPosition) -- (0,-1.25) -- (0.5,-0.5) -- (Switch);
+% \draw[modelrelnoncon] (Segment1) -- (Switch);
+% \draw[modelrelnoncon] (Switch) -- (Segment2);
+% \draw[modelrelnoncon] (Switch) -- (0.75,-0.75) -- (Segment3);
+% \draw[modelrelnoncon] (Route) -- (Semaphore2);
+% \draw[modelrelnoncon] (Route) -- (Semaphore1);
+% \draw[modelrelnoncon] (Route) -- (Sensor);
+% \draw[modelrelbi] (Sensor) -- (Switch);
+
+\end{tikzpicture}

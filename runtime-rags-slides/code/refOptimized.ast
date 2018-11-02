@@ -1,0 +1,2 @@
+abstract Ref ::= <Value:int> ;
+SensorRef : Ref ::= <Sensor:Sensor>;

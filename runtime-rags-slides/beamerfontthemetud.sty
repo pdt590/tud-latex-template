@@ -1,0 +1,32 @@
+\ProvidesPackage{beamerfontthemetud}[2018/09/14]
+
+\RequirePackage[default]{opensans}
+
+% this is a fix as long as tudscr-fonts has not been updated in texlive
+\newrobustcmd*\cdfontln{\usefont{\encodingdefault}{fos}{l}{n}}
+\newrobustcmd*\cdfontrn{\usefont{\encodingdefault}{fos}{m}{n}}
+\newrobustcmd*\cdfontsn{\usefont{\encodingdefault}{fos}{sb}{n}}
+\newrobustcmd*\cdfontbn{\usefont{\encodingdefault}{fos}{b}{n}}
+\newrobustcmd*\cdfontxn{\usefont{\encodingdefault}{fos}{eb}{n}}
+\newrobustcmd*\cdfontli{\usefont{\encodingdefault}{fos}{l}{it}}
+\newrobustcmd*\cdfontri{\usefont{\encodingdefault}{fos}{m}{it}}
+\newrobustcmd*\cdfontsi{\usefont{\encodingdefault}{fos}{sb}{it}}
+\newrobustcmd*\cdfontbi{\usefont{\encodingdefault}{fos}{b}{it}}
+\newrobustcmd*\cdfontxi{\usefont{\encodingdefault}{fos}{eb}{it}}
+
+\setbeamerfont{title}{size=\huge,series=\cdfontbn}
+\setbeamerfont{subtitle}{size=\huge,series=\cdfontln}
+\setbeamerfont{author}{size=\normalsize,series=\cdfontln}
+\setbeamerfont{date}{size=\normalsize,series=\cdfontln}
+
+\setbeamerfont{title author}{size=\normalsize,series=\cdfontln}
+\setbeamerfont{title faculty}{size=\normalsize,series=\cdfontbn}
+\setbeamerfont{title institute}{size=\normalsize,series=\cdfontln}
+\setbeamerfont{title chair}{size=\normalsize,series=\cdfontln}
+\setbeamerfont{title department}{size=\normalsize,series=\cdfontln}
+
+\setbeamerfont{frametitle}{size=\LARGE,series=\cdfontsn}
+\setbeamerfont{framesubtitle}{size=\LARGE,series=\cdfontrn}
+
+
+\setbeamerfont{info in foot}{size=\tiny,series=\cdfontln}

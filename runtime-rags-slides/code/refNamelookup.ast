@@ -1,0 +1,2 @@
+Ref ::= <Value:int>
+SensorRef : Ref;
